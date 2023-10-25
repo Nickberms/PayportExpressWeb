@@ -1,12 +1,29 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="extra_features.NameFormatter"%>
-<%@page import="web_services.TransactionWebServices"%>
+<%@page import="extra_features.*"%>
+<%@page import="web_services.*"%>
+<%@page import="java.util.*"%>
 <!DOCTYPE html>
 <html>
     <head>
         <title>Transaction Form</title>
+        <style>
+            table {
+                border: 1px solid #000;
+                border-collapse: collapse;
+            }
+            th, td {
+                border: 1px solid #000;
+                font-size: 14px;
+                text-align: center;
+                width: 80px;
+            }
+        </style>
+        <script type="text/javascript" src="JAVASCRIPT-INF/javascripts.js"></script>
+        <!-- Create a web service client and call the service -->
+        <%TransactionWebServices service = new TransactionWebServices();%>
     </head>
     <body>
+        <!-- JSP logic to handle the "insertNewTransaction" web service -->
         <%
             if (request.getMethod().equals("POST")) {
                 // Retrieve and format sender's details from form input
@@ -52,29 +69,30 @@
                 // Initialize a flag to track insertion result
                 boolean insertionResult = false;
                 try {
-                    // Create a web service client and call the service to insert data
-                    TransactionWebServices service = new TransactionWebServices();
                     service.insertNewTransaction(senderName, senderContactNumber, receiverName, receiverContactNumber, amount);
-                    // Set insertionResult to true if the insertion was successful
                     insertionResult = true;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 // Check if the data was successfully inserted
                 if (insertionResult) {
-        %>
-        <p>Your form has been successfully sent. We will contact you anytime for verification.</p>
-        <%
-        } else {
-            // Display an error message if the insertion failed
-        %>
-        <p>Sorry, an error occurred while processing your request. Please try again later or contact support.</p>
-        <%
+                    out.println("Your form has been successfully sent. We will contact you anytime for verification.");
+                } else {
+                    out.println("Sorry, an error occurred while processing your request. Please try again later or contact support.");
                 }
             }
         %>
-        <h1>Payport Express Transaction Form</h1>
-        <form action="TransactionFormView.jsp" method="post">
+        <!-- JSP logic to handle the "deleteTransaction" web service -->
+        <%
+            String transactionIdParam = request.getParameter("transactionId");
+            if (transactionIdParam != null && !transactionIdParam.isEmpty()) {
+                int transactionId = Integer.parseInt(transactionIdParam);
+                service.deleteTransaction(transactionId);
+                response.sendRedirect("transaction_form.jsp");
+            }
+        %>
+        <h2>Payport Express Transaction Form</h2>
+        <form action="transaction_form.jsp" method="post">
             <div>
                 <div>
                     <h2>Sender Details</h2>
@@ -130,42 +148,64 @@
             <div>
                 <h2>Amount Money</h2>
                 <label for="amount">Amount Money:</label>
-                <input type="text" id="amount" name="amount" oninput="AmountOnly(this)" required><br>
+                <input type="text" id="amount" name="amount" oninput="AmountOnly(this)" required><br><br>
                 <button type="submit">Submit</button>
             </div>
-        </form>
-        <script>
-            function LettersOnly(inputField) {
-                // Regular expression to allow only letters and a single space
-                var pattern = /^[A-Za-z]+( [A-Za-z]+)*$/;
-                var inputValue = inputField.value;
-                if (!pattern.test(inputValue)) {
-                    // Remove non-alphabet characters and extra spaces
-                    inputField.value = inputValue.replace(/[^A-Za-z\s]/g, '').replace(/\s{2,}/g, ' ');
-                }
-            }
-            function NumbersOnly(inputField) {
-                // Regular expression to allow only numbers
-                var pattern = /^[0-9]+$/;
-                var inputValue = inputField.value;
-                if (!pattern.test(inputValue)) {
-                    // Remove non-number characters
-                    inputField.value = inputValue.replace(/[^0-9]/g, '');
-                }
-            }
-            function AmountOnly(inputField) {
-                var inputValue = inputField.value;
-                // Remove any extra periods
-                var cleanedValue = inputValue.replace(/(\.\d*)\./, '$1');
-                // Regular expression to allow numbers with one decimal point
-                var pattern = /^\d*\.?\d*$/;
-                if (!pattern.test(cleanedValue)) {
-                    // Remove non-number or extra decimal characters
-                    cleanedValue = cleanedValue.replace(/[^0-9.]/g, '');
-                }
-                // Set the cleaned value back in the input field
-                inputField.value = cleanedValue;
-            }
-        </script>
+        </form><br>
+        <h2>Transaction Table</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Transaction ID</th>
+                    <th>Verification Status</th>
+                    <th>Sender Name</th>
+                    <th>Sender Contact Number</th>
+                    <th>Receiver Name</th>
+                    <th>Receiver Contact Number</th>
+                    <th>Amount</th>
+                    <th>Control Number</th>
+                    <th>Sender Employee</th>
+                    <th>Receiver Employee</th>
+                    <th>Branch Sent</th>
+                    <th>Branch Withdrawn</th>
+                    <th>Date Sent</th>
+                    <th>Withdrawal Status</th>
+                    <th>Date Withdrawn</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- JSP logic to handle the "selectAllTransactions" web service -->
+                <%
+                    // Retrieve the list of transactions
+                    List<String[]> transactions = service.selectAllTransactions();
+                    for (String[] transaction : transactions) {
+                %>
+                <tr>
+                    <td><%= (transaction[0] != null && !transaction[0].isEmpty()) ? transaction[0] : ""%></td>
+                    <td><%= (transaction[1] != null && !transaction[1].isEmpty()) ? transaction[1] : ""%></td>
+                    <td><%= (transaction[2] != null && !transaction[2].isEmpty()) ? transaction[2] : ""%></td>
+                    <td><%= (transaction[3] != null && !transaction[3].isEmpty()) ? transaction[3] : ""%></td>
+                    <td><%= (transaction[4] != null && !transaction[4].isEmpty()) ? transaction[4] : ""%></td>
+                    <td><%= (transaction[5] != null && !transaction[5].isEmpty()) ? transaction[5] : ""%></td>
+                    <td><%= (transaction[6] != null && !transaction[6].isEmpty()) ? transaction[6] : ""%></td>
+                    <td><%= (transaction[7] != null && !transaction[7].isEmpty()) ? transaction[7] : ""%></td>
+                    <td><%= ("1".equals(transaction[8])) ? "" : transaction[8]%></td>
+                    <td><%= ("1".equals(transaction[9])) ? "" : transaction[9]%></td>
+                    <td><%= ("1".equals(transaction[10])) ? "" : transaction[10]%></td>
+                    <td><%= ("1".equals(transaction[11])) ? "" : transaction[11]%></td>
+                    <td><%= (transaction[12] != null && !transaction[12].isEmpty()) ? transaction[12] : ""%></td>
+                    <td><%= (transaction[13] != null && !transaction[13].isEmpty()) ? transaction[13] : ""%></td>
+                    <td><%= (transaction[14] != null && !transaction[14].isEmpty()) ? transaction[14] : ""%></td>
+                    <td>
+                        <a href="">Edit</a>
+                        <a href="javascript:void(0);" onclick="ConfirmDelete('<%= transaction[0]%>')">Delete</a>
+                    </td>
+                </tr>
+                <%
+                    }
+                %>   
+            </tbody>
+        </table><br><br><br>
     </body>
 </html>

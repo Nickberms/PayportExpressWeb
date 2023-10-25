@@ -1,6 +1,6 @@
 package query_operations;
 
-import database_connection.DatabaseConnection;
+import database_connection.*;
 import java.sql.*;
 import java.util.*;
 
@@ -274,6 +274,75 @@ public class TransactionQueries extends DatabaseConnection {
             }
         } catch (SQLException error) {
             System.err.println(error);
+        }
+    }
+
+    // Selects all the transaction records in the database
+    public List<TransactionQueries> selectAllTransactions() {
+        // Create a new list to store instances
+        List<TransactionQueries> transactions = new ArrayList<>();
+        try {
+            // Establish a database connection
+            super.getConnectedToDatabaseHost();
+            try (PreparedStatement statement = connection.prepareStatement("SELECT `transaction_id`, "
+                    + "`verification_status`, "
+                    + "`sender_name`, "
+                    + "`sender_contact_number`, "
+                    + "`receiver_name`, "
+                    + "`receiver_contact_number`, "
+                    + "`amount`, "
+                    + "`control_number`, "
+                    + "`sender_employee`, "
+                    + "`receiver_employee`, "
+                    + "`branch_sent`, "
+                    + "`branch_withdrawn`, "
+                    + "`date_sent`, "
+                    + "`withdrawal_status`, "
+                    + "`date_withdrawn` "
+                    + "FROM `transactions`;"); ResultSet result = statement.executeQuery()) {
+                while (result.next()) {
+                    // Retrieve data from the result set
+                    TransactionQueries transaction = new TransactionQueries();
+                    transaction.setTransactionId(result.getInt("transaction_id"));
+                    transaction.setVerificationStatus(result.getString("verification_status"));
+                    transaction.setSenderName(result.getString("sender_name"));
+                    transaction.setSenderContactNumber(result.getString("sender_contact_number"));
+                    transaction.setReceiverName(result.getString("receiver_name"));
+                    transaction.setReceiverContactNumber(result.getString("receiver_contact_number"));
+                    transaction.setAmount(result.getString("amount"));
+                    transaction.setControlNumber(result.getString("control_number"));
+                    transaction.setSenderEmployee(result.getObject("sender_employee") != null ? result.getInt("sender_employee") : 0);
+                    transaction.setReceiverEmployee(result.getObject("receiver_employee") != null ? result.getInt("receiver_employee") : 0);
+                    transaction.setBranchSent(result.getObject("branch_sent") != null ? result.getInt("branch_sent") : 0);
+                    transaction.setBranchWithdrawn(result.getObject("branch_withdrawn") != null ? result.getInt("branch_withdrawn") : 0);
+                    transaction.setDateSent(result.getTimestamp("date_sent"));
+                    transaction.setWithdrawalStatus(result.getString("withdrawal_status"));
+                    transaction.setDateWithdrawn(result.getTimestamp("date_withdrawn"));
+                    transactions.add(transaction);
+                }
+            }
+        } catch (SQLException error) {
+            System.err.println(error);
+        }
+        return transactions;
+    }
+
+    // Deletes a transaction record into the database
+    public boolean deleteTransaction(int transactionId) {
+        try {
+            // Establish a database connection
+            super.getConnectedToDatabaseHost();
+            // Deleting a transaction by its primary key
+            try (PreparedStatement statement = connection.prepareStatement("DELETE FROM `transactions` WHERE `transaction_id` = ?;")) {
+                statement.setInt(1, transactionId);
+                // Execute the SQL statement
+                int rowsAffected = statement.executeUpdate();
+                // Return true if rows were affected
+                return rowsAffected > 0;
+            }
+        } catch (SQLException error) {
+            System.err.println(error);
+            return false;
         }
     }
 }

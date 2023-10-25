@@ -106,6 +106,7 @@ public class DatabaseConnection {
                     // Create a connection to the database
                     setConnection(DriverManager.getConnection(getJDBCURL(), getUsername(), getPassword()));
                     System.out.println("Connected successfully to the database");
+                    System.out.println();
                 } catch (ClassNotFoundException | SQLException error) {
                     System.err.println(error);
                 }
@@ -123,7 +124,7 @@ public class DatabaseConnection {
         try {
             if (getConnection() == null || getConnection().isClosed()) {
                 try {
-                    // Load the database driver class using newInstance method
+                    // Load the database driver class
                     Class.forName(getDatabaseDriver()).newInstance();
                     // Create a connection to the database
                     setConnection(DriverManager.getConnection(getJDBCURL(), getUsername(), getPassword()));

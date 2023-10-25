@@ -1,12 +1,12 @@
 package tester_package;
 
-import extra_features.NameFormatter;
-import web_services.TransactionWebServices;
+import extra_features.*;
+import web_services.*;
 import java.util.*;
 
-public class WebServicesTester {
+public class InsertNewTransaction {
 
-    // Main method to test the web services in the console
+    // Main method to test the web service in the console
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             System.out.println("--------------------------------------------------");
@@ -81,7 +81,7 @@ public class WebServicesTester {
             System.out.println("Receiver Contact Number: " + receiverContactNumber);
             System.out.println("Amount: " + amount);
             System.out.println();
-            // Create and call the insertNewTransaction web service
+            // Create and call the web service
             TransactionWebServices service = new TransactionWebServices();
             service.insertNewTransaction(senderName, senderContactNumber, receiverName, receiverContactNumber, amount);
         }
