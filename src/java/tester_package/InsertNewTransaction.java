@@ -74,13 +74,6 @@ public class InsertNewTransaction {
             System.out.println("New Transaction Successfully Recorded");
             System.out.println("--------------------------------------------------");
             System.out.println();
-            // Display recorded transaction information
-            System.out.println("Sender Name: " + senderName);
-            System.out.println("Sender Contact Number: " + senderContactNumber);
-            System.out.println("Receiver Name: " + receiverName);
-            System.out.println("Receiver Contact Number: " + receiverContactNumber);
-            System.out.println("Amount: " + amount);
-            System.out.println();
             // Create and call the web service
             TransactionWebServices service = new TransactionWebServices();
             service.insertNewTransaction(senderName, senderContactNumber, receiverName, receiverContactNumber, amount);

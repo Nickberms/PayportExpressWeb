@@ -31,6 +31,7 @@
             <word>insertNewTransaction</word>
             <word>JSP</word>
             <word>selectAllTransactions</word>
+            <word>verifyTransaction</word>
         </spellchecker-wordlist>
     </configuration>
 </project>

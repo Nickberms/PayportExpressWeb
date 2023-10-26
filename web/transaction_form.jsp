@@ -19,80 +19,81 @@
             }
         </style>
         <script type="text/javascript" src="JAVASCRIPT-INF/javascripts.js"></script>
-        <!-- Create a web service client and call the service -->
         <%TransactionWebServices service = new TransactionWebServices();%>
     </head>
-    <body>
-        <!-- JSP logic to handle the "insertNewTransaction" web service -->
+    <body>        
         <%
-            if (request.getMethod().equals("POST")) {
-                // Retrieve and format sender's details from form input
-                String senderFirstName = request.getParameter("senderFirstName");
-                senderFirstName = NameFormatter.formatName(senderFirstName);
-                String senderMiddleName = request.getParameter("senderMiddleName");
-                senderMiddleName = NameFormatter.formatName(senderMiddleName);
-                String senderLastName = request.getParameter("senderLastName");
-                senderLastName = NameFormatter.formatName(senderLastName);
-                String senderNameSuffix = request.getParameter("senderNameSuffix");
-                // Create a formatted sender name from the components
-                String senderName = senderFirstName;
-                if (senderMiddleName != null && !senderMiddleName.isEmpty()) {
-                    senderName += " " + senderMiddleName;
+            String action = request.getParameter("action");
+            try {
+                if (action.equals("insert")) {
+                    String senderFirstName = request.getParameter("senderFirstName");
+                    senderFirstName = NameFormatter.formatName(senderFirstName);
+                    String senderMiddleName = request.getParameter("senderMiddleName");
+                    senderMiddleName = NameFormatter.formatName(senderMiddleName);
+                    String senderLastName = request.getParameter("senderLastName");
+                    senderLastName = NameFormatter.formatName(senderLastName);
+                    String senderNameSuffix = request.getParameter("senderNameSuffix");
+                    String senderName = senderFirstName;
+                    if (senderMiddleName != null && !senderMiddleName.isEmpty()) {
+                        senderName += " " + senderMiddleName;
+                    }
+                    senderName += " " + senderLastName;
+                    if (senderNameSuffix != null && !senderNameSuffix.isEmpty()) {
+                        senderName += " " + senderNameSuffix;
+                    }
+                    String senderContactNumber = request.getParameter("senderContactNumber");
+                    String receiverFirstName = request.getParameter("receiverFirstName");
+                    receiverFirstName = NameFormatter.formatName(receiverFirstName);
+                    String receiverMiddleName = request.getParameter("receiverMiddleName");
+                    receiverMiddleName = NameFormatter.formatName(receiverMiddleName);
+                    String receiverLastName = request.getParameter("receiverLastName");
+                    receiverLastName = NameFormatter.formatName(receiverLastName);
+                    String receiverNameSuffix = request.getParameter("receiverNameSuffix");
+                    String receiverName = receiverFirstName;
+                    if (receiverMiddleName != null && !receiverMiddleName.isEmpty()) {
+                        receiverName += " " + receiverMiddleName;
+                    }
+                    receiverName += " " + receiverLastName;
+                    if (receiverNameSuffix != null && !receiverNameSuffix.isEmpty()) {
+                        receiverName += " " + receiverNameSuffix;
+                    }
+                    String receiverContactNumber = request.getParameter("receiverContactNumber");
+                    String amount = request.getParameter("amount");
+                    boolean insertionResult = false;
+                    try {
+                        service.insertNewTransaction(senderName, senderContactNumber, receiverName, receiverContactNumber, amount);
+                        insertionResult = true;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (insertionResult) {
+                        out.println("Your form has been successfully sent. We will contact you anytime for verification.");
+                    } else {
+                        out.println("Sorry, an error occurred while processing your request. Please try again later or contact support.");
+                    }
+                } else if (action.equals("verify")) {
+                    String transactionIdParam = request.getParameter("transactionId");
+                    int transactionId = Integer.parseInt(transactionIdParam);
+                    service.verifyTransaction(transactionId);
+                    response.sendRedirect("transaction_form.jsp");
+                } else if (action.equals("send")) {
+                    // Execute code for the "Send" action
+                    // Add your Send action code here
+                } else if (action.equals("withdraw")) {
+                    // Execute code for the "Withdraw" action
+                    // Add your Withdraw action code here
+                } else if (action.equals("delete")) {
+                    String transactionIdParam = request.getParameter("transactionId");
+                    int transactionId = Integer.parseInt(transactionIdParam);
+                    service.deleteTransaction(transactionId);
+                    response.sendRedirect("transaction_form.jsp");
                 }
-                senderName += " " + senderLastName;
-                if (senderNameSuffix != null && !senderNameSuffix.isEmpty()) {
-                    senderName += " " + senderNameSuffix;
-                }
-                // Retrieve sender's contact number
-                String senderContactNumber = request.getParameter("senderContactNumber");
-                // Retrieve and format receiver's details from form input
-                String receiverFirstName = request.getParameter("receiverFirstName");
-                receiverFirstName = NameFormatter.formatName(receiverFirstName);
-                String receiverMiddleName = request.getParameter("receiverMiddleName");
-                receiverMiddleName = NameFormatter.formatName(receiverMiddleName);
-                String receiverLastName = request.getParameter("receiverLastName");
-                receiverLastName = NameFormatter.formatName(receiverLastName);
-                String receiverNameSuffix = request.getParameter("receiverNameSuffix");
-                // Create a formatted receiver name from the components
-                String receiverName = receiverFirstName;
-                if (receiverMiddleName != null && !receiverMiddleName.isEmpty()) {
-                    receiverName += " " + receiverMiddleName;
-                }
-                receiverName += " " + receiverLastName;
-                if (receiverNameSuffix != null && !receiverNameSuffix.isEmpty()) {
-                    receiverName += " " + receiverNameSuffix;
-                }
-                // Retrieve receiver's contact number
-                String receiverContactNumber = request.getParameter("receiverContactNumber");
-                // Retrieve the transaction amount
-                String amount = request.getParameter("amount");
-                // Initialize a flag to track insertion result
-                boolean insertionResult = false;
-                try {
-                    service.insertNewTransaction(senderName, senderContactNumber, receiverName, receiverContactNumber, amount);
-                    insertionResult = true;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                // Check if the data was successfully inserted
-                if (insertionResult) {
-                    out.println("Your form has been successfully sent. We will contact you anytime for verification.");
-                } else {
-                    out.println("Sorry, an error occurred while processing your request. Please try again later or contact support.");
-                }
-            }
-        %>
-        <!-- JSP logic to handle the "deleteTransaction" web service -->
-        <%
-            String transactionIdParam = request.getParameter("transactionId");
-            if (transactionIdParam != null && !transactionIdParam.isEmpty()) {
-                int transactionId = Integer.parseInt(transactionIdParam);
-                service.deleteTransaction(transactionId);
-                response.sendRedirect("transaction_form.jsp");
+            } catch (Exception error) {
+                error.printStackTrace();
             }
         %>
         <h2>Payport Express Transaction Form</h2>
-        <form action="transaction_form.jsp" method="post">
+        <form action="transaction_form.jsp?action=insert" method="post">
             <div>
                 <div>
                     <h2>Sender Details</h2>
@@ -175,9 +176,7 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- JSP logic to handle the "selectAllTransactions" web service -->
                 <%
-                    // Retrieve the list of transactions
                     List<String[]> transactions = service.selectAllTransactions();
                     for (String[] transaction : transactions) {
                 %>
@@ -198,8 +197,10 @@
                     <td><%= (transaction[13] != null && !transaction[13].isEmpty()) ? transaction[13] : ""%></td>
                     <td><%= (transaction[14] != null && !transaction[14].isEmpty()) ? transaction[14] : ""%></td>
                     <td>
-                        <a href="">Edit</a>
-                        <a href="javascript:void(0);" onclick="ConfirmDelete('<%= transaction[0]%>')">Delete</a>
+                        <a href="transaction_form.jsp?action=verify&transactionId=<%= transaction[0]%>">Verify</a>
+                        <a href="">Send</a>
+                        <a href="">Withdraw</a>
+                        <a href="transaction_form.jsp?action=delete&transactionId=<%= transaction[0]%>">Delete</a>
                     </td>
                 </tr>
                 <%

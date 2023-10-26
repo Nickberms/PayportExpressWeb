@@ -29,9 +29,3 @@ function AmountOnly(inputField) {
     // Set the cleaned value back in the input field
     inputField.value = cleanedValue;
 }
-function ConfirmDelete(transactionId) {
-    // Confirmation message for transaction record deletion
-    if (confirm("Delete transaction number " + transactionId + "?")) {
-        window.location.href = "transaction_form.jsp?transactionId=" + transactionId;
-    }
-}

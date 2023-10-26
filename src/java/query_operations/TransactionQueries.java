@@ -6,7 +6,6 @@ import java.util.*;
 
 public class TransactionQueries extends DatabaseConnection {
 
-    // Initializing variables
     private Integer transaction_id;
     private String verification_status;
     private String sender_name;
@@ -26,11 +25,9 @@ public class TransactionQueries extends DatabaseConnection {
     private Timestamp date_modified;
     private Collection<TransactionQueries> connectionData;
 
-    // Default constructor
     public TransactionQueries() {
     }
 
-    // Parameterized constructor
     public TransactionQueries(
             Integer transaction_id,
             String verification_status,
@@ -49,7 +46,6 @@ public class TransactionQueries extends DatabaseConnection {
             Timestamp date_withdrawn,
             Timestamp date_created,
             Timestamp date_modified) {
-        // Set values from constructor parameters
         this.transaction_id = transaction_id;
         this.verification_status = verification_status;
         this.sender_name = sender_name;
@@ -69,7 +65,6 @@ public class TransactionQueries extends DatabaseConnection {
         this.date_modified = date_modified;
     }
 
-    // Getter and setter methods for each property
     public Integer getTransactionId() {
         return transaction_id;
     }
@@ -214,9 +209,7 @@ public class TransactionQueries extends DatabaseConnection {
         this.connectionData = connectionData;
     }
 
-    // Inserts a new transaction record into the database
     public void insertNewTransaction() {
-        // Default values for various fields
         String default_verification_status_value = "Not Verified";
         String default_control_number_value = null;
         int default_sender_employee_value = 1;
@@ -225,7 +218,6 @@ public class TransactionQueries extends DatabaseConnection {
         int default_branch_withdrawn_value = 1;
         String default_withdrawal_status_value = null;
         try {
-            // Establish a database connection
             super.getConnectedToDatabaseHost();
             try (PreparedStatement statement = connection.prepareStatement("INSERT INTO `transactions` "
                     + "(`verification_status`, "
@@ -245,7 +237,6 @@ public class TransactionQueries extends DatabaseConnection {
                     + "`date_created`, "
                     + "`date_modified`) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());")) {
-                // Set the values for the prepared statement
                 statement.setString(1, default_verification_status_value);
                 statement.setString(2, sender_name);
                 statement.setString(3, sender_contact_number);
@@ -268,7 +259,6 @@ public class TransactionQueries extends DatabaseConnection {
                 } else {
                     statement.setNull(14, Types.TIMESTAMP);
                 }
-                // Execute the SQL statement
                 statement.execute();
                 statement.close();
             }
@@ -277,12 +267,9 @@ public class TransactionQueries extends DatabaseConnection {
         }
     }
 
-    // Selects all the transaction records in the database
     public List<TransactionQueries> selectAllTransactions() {
-        // Create a new list to store instances
         List<TransactionQueries> transactions = new ArrayList<>();
         try {
-            // Establish a database connection
             super.getConnectedToDatabaseHost();
             try (PreparedStatement statement = connection.prepareStatement("SELECT `transaction_id`, "
                     + "`verification_status`, "
@@ -301,7 +288,6 @@ public class TransactionQueries extends DatabaseConnection {
                     + "`date_withdrawn` "
                     + "FROM `transactions`;"); ResultSet result = statement.executeQuery()) {
                 while (result.next()) {
-                    // Retrieve data from the result set
                     TransactionQueries transaction = new TransactionQueries();
                     transaction.setTransactionId(result.getInt("transaction_id"));
                     transaction.setVerificationStatus(result.getString("verification_status"));
@@ -327,17 +313,121 @@ public class TransactionQueries extends DatabaseConnection {
         return transactions;
     }
 
-    // Deletes a transaction record into the database
+    public boolean updateTransaction(int transactionId) {
+        try {
+            super.getConnectedToDatabaseHost();
+            try (PreparedStatement statement = connection.prepareStatement("UPDATE `transactions` SET "
+                    + "`verification_status` = ?, "
+                    + "`sender_name` = ?, "
+                    + "`sender_contact_number` = ?, "
+                    + "`receiver_name` = ?, "
+                    + "`receiver_contact_number` = ?, "
+                    + "`amount` = ?, "
+                    + "`control_number` = ?, "
+                    + "`sender_employee` = ?, "
+                    + "`receiver_employee` = ?, "
+                    + "`branch_sent` = ?, "
+                    + "`branch_withdrawn` = ?, "
+                    + "`withdrawal_status` = ?, "
+                    + "`date_modified` = NOW() "
+                    + "WHERE `transaction_id` = ?;")) {
+                statement.setString(1, verification_status);
+                statement.setString(2, sender_name);
+                statement.setString(3, sender_contact_number);
+                statement.setString(4, receiver_name);
+                statement.setString(5, receiver_contact_number);
+                statement.setString(6, amount);
+                statement.setString(7, control_number);
+                statement.setInt(8, sender_employee);
+                statement.setInt(9, receiver_employee);
+                statement.setInt(10, branch_sent);
+                statement.setInt(11, branch_withdrawn);
+                statement.setString(12, withdrawal_status);
+                statement.setInt(13, transactionId);
+                int rowsAffected = statement.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (SQLException error) {
+            System.err.println(error);
+            return false;
+        }
+    }
+
+    public boolean verifyTransaction(int transactionId) {
+        String updated_verification_status_value = "Verified";
+        try {
+            super.getConnectedToDatabaseHost();
+            try (PreparedStatement statement = connection.prepareStatement("UPDATE `transactions` SET "
+                    + "`verification_status` = ?, "
+                    + "`date_modified` = NOW() "
+                    + "WHERE `transaction_id` = ?;")) {
+                statement.setString(1, updated_verification_status_value);
+                statement.setInt(2, transactionId);
+                int rowsAffected = statement.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (SQLException error) {
+            System.err.println(error);
+            return false;
+        }
+    }
+
+    public boolean sendMoney(int transactionId) {
+        String updated_withdrawal_status_value = "Not Withdrawn";
+        try {
+            super.getConnectedToDatabaseHost();
+            try (PreparedStatement statement = connection.prepareStatement("UPDATE `transactions` SET "
+                    + "`control_number` = ?, "
+                    + "`sender_employee` = ?, "
+                    + "`branch_sent` = ?, "
+                    + "`date_sent` = NOW(), "
+                    + "`withdrawal_status` = ?, "
+                    + "`date_modified` = NOW() "
+                    + "WHERE `transaction_id` = ?;")) {
+                statement.setString(1, control_number);
+                statement.setInt(2, sender_employee);
+                statement.setInt(3, branch_sent);
+                statement.setString(4, updated_withdrawal_status_value);
+                statement.setInt(5, transactionId);
+                int rowsAffected = statement.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (SQLException error) {
+            System.err.println(error);
+            return false;
+        }
+    }
+
+    public boolean withdrawMoney(int transactionId) {
+        String updated_withdrawal_status_value = "Withdrawn";
+        try {
+            super.getConnectedToDatabaseHost();
+            try (PreparedStatement statement = connection.prepareStatement("UPDATE `transactions` SET "
+                    + "`receiver_employee` = ?, "
+                    + "`branch_withdrawn` = ?, "
+                    + "`withdrawal_status` = ?, "
+                    + "`date_withdrawn` = NOW(), "
+                    + "`date_modified` = NOW() "
+                    + "WHERE `transaction_id` = ?;")) {
+                statement.setInt(1, receiver_employee);
+                statement.setInt(2, branch_withdrawn);
+                statement.setString(3, updated_withdrawal_status_value);
+                statement.setInt(4, transactionId);
+                int rowsAffected = statement.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (SQLException error) {
+            System.err.println(error);
+            return false;
+        }
+    }
+
     public boolean deleteTransaction(int transactionId) {
         try {
-            // Establish a database connection
             super.getConnectedToDatabaseHost();
-            // Deleting a transaction by its primary key
             try (PreparedStatement statement = connection.prepareStatement("DELETE FROM `transactions` WHERE `transaction_id` = ?;")) {
                 statement.setInt(1, transactionId);
-                // Execute the SQL statement
                 int rowsAffected = statement.executeUpdate();
-                // Return true if rows were affected
                 return rowsAffected > 0;
             }
         } catch (SQLException error) {
