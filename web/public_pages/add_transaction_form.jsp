@@ -5,20 +5,9 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Transaction Form</title>
-        <style>
-            table {
-                border: 1px solid #000;
-                border-collapse: collapse;
-            }
-            th, td {
-                border: 1px solid #000;
-                font-size: 14px;
-                text-align: center;
-                width: 80px;
-            }
-        </style>
-        <script type="text/javascript" src="JAVASCRIPT-INF/javascripts.js"></script>
+        <title>Add New Transaction</title>
+        <link rel="stylesheet" type="text/css" href="public_styles.css">
+        <script type="text/javascript" src="public_scripts.js"></script>
         <%TransactionWebServices service = new TransactionWebServices();%>
     </head>
     <body>        
@@ -63,8 +52,8 @@
                     try {
                         service.insertNewTransaction(senderName, senderContactNumber, receiverName, receiverContactNumber, amount);
                         insertionResult = true;
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                    } catch (Exception error) {
+                        error.printStackTrace();
                     }
                     if (insertionResult) {
                         out.println("Your form has been successfully sent. We will contact you anytime for verification.");
@@ -75,7 +64,7 @@
                     String transactionIdParam = request.getParameter("transactionId");
                     int transactionId = Integer.parseInt(transactionIdParam);
                     service.verifyTransaction(transactionId);
-                    response.sendRedirect("transaction_form.jsp");
+                    response.sendRedirect("add_transaction_form.jsp");
                 } else if (action.equals("send")) {
                     // Execute code for the "Send" action
                     // Add your Send action code here
@@ -86,14 +75,14 @@
                     String transactionIdParam = request.getParameter("transactionId");
                     int transactionId = Integer.parseInt(transactionIdParam);
                     service.deleteTransaction(transactionId);
-                    response.sendRedirect("transaction_form.jsp");
+                    response.sendRedirect("add_transaction_form.jsp");
                 }
             } catch (Exception error) {
                 error.printStackTrace();
             }
         %>
         <h2>Payport Express Transaction Form</h2>
-        <form action="transaction_form.jsp?action=insert" method="post">
+        <form action="add_transaction_form.jsp?action=insert" method="post">
             <div>
                 <div>
                     <h2>Sender Details</h2>
@@ -152,8 +141,8 @@
                 <input type="text" id="amount" name="amount" oninput="AmountOnly(this)" required><br><br>
                 <button type="submit">Submit</button>
             </div>
-        </form><br>
-        <h2>Transaction Table</h2>
+        </form>
+        <h2>Transactions Table</h2>
         <table>
             <thead>
                 <tr>
@@ -197,10 +186,10 @@
                     <td><%= (transaction[13] != null && !transaction[13].isEmpty()) ? transaction[13] : ""%></td>
                     <td><%= (transaction[14] != null && !transaction[14].isEmpty()) ? transaction[14] : ""%></td>
                     <td>
-                        <a href="transaction_form.jsp?action=verify&transactionId=<%= transaction[0]%>">Verify</a>
+                        <a href="add_transaction_form.jsp?action=verify&transactionId=<%= transaction[0]%>">Verify</a>
                         <a href="">Send</a>
                         <a href="">Withdraw</a>
-                        <a href="transaction_form.jsp?action=delete&transactionId=<%= transaction[0]%>">Delete</a>
+                        <a href="add_transaction_form.jsp?action=delete&transactionId=<%= transaction[0]%>">Delete</a>
                     </td>
                 </tr>
                 <%

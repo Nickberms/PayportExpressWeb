@@ -4,6 +4,9 @@
     <service name="TransactionWebServices">
       <implementation-class>web_services.TransactionWebServices</implementation-class>
     </service>
+    <service name="BranchWebServices">
+      <implementation-class>web_services.BranchWebServices</implementation-class>
+    </service>
   </services>
   <clients/>
   <jsr109>false</jsr109>

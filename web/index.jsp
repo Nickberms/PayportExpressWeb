@@ -5,9 +5,11 @@
         <title>Landing Page</title>
     </head>
     <body>
-        <h1>Click the button to navigate to the transaction form.</h1>
-        <form action="transaction_form.jsp">
-            <input type="submit" value="Go to Transaction Form">
+        <br><form action="public_pages/add_transaction_form.jsp">
+            <input type="submit" value="Go to Add Transaction Form">
+        </form><br>
+        <form action="admin_pages/admin_login.jsp">
+            <input type="submit" value="Go to Admin Login">
         </form>
     </body>
 </html>

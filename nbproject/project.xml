@@ -27,9 +27,11 @@
             </test-roots>
         </data>
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
+            <word>Admin</word>
             <word>deleteTransaction</word>
             <word>insertNewTransaction</word>
             <word>JSP</word>
+            <word>Payport</word>
             <word>selectAllTransactions</word>
             <word>verifyTransaction</word>
         </spellchecker-wordlist>
