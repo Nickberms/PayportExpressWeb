@@ -149,6 +149,30 @@ public class BranchQueries extends DatabaseConnection {
         return branches;
     }
 
+    public boolean updateBranch(int branchId) {
+        try {
+            super.getConnectedToDatabaseHost();
+            try (PreparedStatement statement = connection.prepareStatement("UPDATE `branches` SET "
+                    + "`operation_status` = ?, "
+                    + "`branch_name` = ?, "
+                    + "`address` = ?, "
+                    + "`contact_information` = ?, "
+                    + "`date_modified` = NOW() "
+                    + "WHERE `branch_id` = ?;")) {
+                statement.setString(1, operation_status);
+                statement.setString(2, branch_name);
+                statement.setString(3, address);
+                statement.setString(4, contact_information);
+                statement.setInt(5, branchId);
+                int rowsAffected = statement.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (SQLException error) {
+            System.err.println(error);
+            return false;
+        }
+    }
+
     public boolean deleteBranch(int branchId) {
         try {
             super.getConnectedToDatabaseHost();

@@ -38,6 +38,20 @@ public class BranchWebServices {
         return branchStr;
     }
 
+    @WebMethod(operationName = "updateBranch")
+    public boolean updateBranch(int branchId,
+            @WebParam(name = "operation_status") String operation_status,
+            @WebParam(name = "branch_name") String branch_name,
+            @WebParam(name = "address") String address,
+            @WebParam(name = "contact_information") String contact_information) {
+        BranchQueries updateBranch = new BranchQueries();
+        updateBranch.setOperationStatus(operation_status);
+        updateBranch.setBranchName(branch_name);
+        updateBranch.setAddress(address);
+        updateBranch.setContactInformation(contact_information);
+        return updateBranch.updateBranch(branchId);
+    }
+
     @WebMethod(operationName = "deleteBranch")
     public boolean deleteBranch(int branchId) {
         BranchQueries deleteBranch = new BranchQueries();
