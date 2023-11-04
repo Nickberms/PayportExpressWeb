@@ -51,7 +51,7 @@
                     <td><%= (branch[3] != null && !branch[3].isEmpty()) ? branch[3] : ""%></td>
                     <td><%= (branch[4] != null && !branch[4].isEmpty()) ? branch[4] : ""%></td>
                     <td>
-                        <a href="manage_branches_view.jsp?action=update&branchId=<%= branch[0]%>">Update</a>
+                        <a href="update_branch_form.jsp?branchId=<%= branch[0]%>">Update</a>
                         <a href="manage_branches_view.jsp?action=delete&branchId=<%= branch[0]%>">Delete</a>
                     </td>
                 </tr>

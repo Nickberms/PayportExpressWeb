@@ -99,7 +99,7 @@ public class BranchQueries extends DatabaseConnection {
         this.connectionData = connectionData;
     }
 
-    public void insertNewBranch() {
+    public void insertNewBranch_Query() {
         String default_operation_status_value = "Active";
         try {
             super.getConnectedToDatabaseHost();
@@ -123,7 +123,7 @@ public class BranchQueries extends DatabaseConnection {
         }
     }
 
-    public List<BranchQueries> selectAllBranches() {
+    public List<BranchQueries> selectAllBranches_Query() {
         List<BranchQueries> branches = new ArrayList<>();
         try {
             super.getConnectedToDatabaseHost();
@@ -149,7 +149,35 @@ public class BranchQueries extends DatabaseConnection {
         return branches;
     }
 
-    public boolean updateBranch(int branchId) {
+    public BranchQueries selectBranch_Query(int branchId) {
+        BranchQueries branch = null;
+        try {
+            super.getConnectedToDatabaseHost();
+            try (PreparedStatement statement = connection.prepareStatement("SELECT `branch_id`, "
+                    + "`operation_status`, "
+                    + "`branch_name`, "
+                    + "`address`, "
+                    + "`contact_information` "
+                    + "FROM `branches` WHERE `branch_id` = ?;")) {
+                statement.setInt(1, branchId);
+                try (ResultSet result = statement.executeQuery()) {
+                    if (result.next()) {
+                        branch = new BranchQueries();
+                        branch.setBranchId(result.getInt("branch_id"));
+                        branch.setOperationStatus(result.getString("operation_status"));
+                        branch.setBranchName(result.getString("branch_name"));
+                        branch.setAddress(result.getString("address"));
+                        branch.setContactInformation(result.getString("contact_information"));
+                    }
+                }
+            }
+        } catch (SQLException error) {
+            System.err.println(error);
+        }
+        return branch;
+    }
+
+    public boolean updateBranch_Query(int branchId) {
         try {
             super.getConnectedToDatabaseHost();
             try (PreparedStatement statement = connection.prepareStatement("UPDATE `branches` SET "
@@ -173,7 +201,7 @@ public class BranchQueries extends DatabaseConnection {
         }
     }
 
-    public boolean deleteBranch(int branchId) {
+    public boolean deleteBranch_Query(int branchId) {
         try {
             super.getConnectedToDatabaseHost();
             try (PreparedStatement statement = connection.prepareStatement("DELETE FROM `branches` WHERE `branch_id` = ?;")) {
