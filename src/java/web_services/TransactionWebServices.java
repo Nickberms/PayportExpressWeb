@@ -20,14 +20,14 @@ public class TransactionWebServices {
         insertNewTransaction.setReceiverName(receiver_name);
         insertNewTransaction.setReceiverContactNumber(receiver_contact_number);
         insertNewTransaction.setAmount(amount);
-        insertNewTransaction.insertNewTransaction();
+        insertNewTransaction.insertNewTransaction_Query();
     }
 
     @WebMethod(operationName = "selectAllTransactions")
     public ArrayList<String[]> selectAllTransactions() {
         ArrayList<String[]> transactionStr = new ArrayList<>();
         TransactionQueries selectAllTransactions = new TransactionQueries();
-        List<TransactionQueries> transactions = selectAllTransactions.selectAllTransactions();
+        List<TransactionQueries> transactions = selectAllTransactions.selectAllTransactions_Query();
         if (transactions != null) {
             transactions.forEach((transaction) -> {
                 String[] str = new String[15];
@@ -79,18 +79,18 @@ public class TransactionWebServices {
         updateTransaction.setBranchSent(branch_sent);
         updateTransaction.setBranchWithdrawn(branch_withdrawn);
         updateTransaction.setWithdrawalStatus(withdrawal_status);
-        return updateTransaction.updateTransaction(transactionId);
+        return updateTransaction.updateTransaction_Query(transactionId);
     }
 
     @WebMethod(operationName = "verifyTransaction")
     public boolean verifyTransaction(int transactionId) {
         TransactionQueries verifyTransaction = new TransactionQueries();
-        return verifyTransaction.verifyTransaction(transactionId);
+        return verifyTransaction.verifyTransaction_Query(transactionId);
     }
 
     @WebMethod(operationName = "deleteTransaction")
     public boolean deleteTransaction(int transactionId) {
         TransactionQueries deleteTransaction = new TransactionQueries();
-        return deleteTransaction.deleteTransaction(transactionId);
+        return deleteTransaction.deleteTransaction_Query(transactionId);
     }
 }

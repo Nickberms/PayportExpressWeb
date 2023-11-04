@@ -209,7 +209,7 @@ public class TransactionQueries extends DatabaseConnection {
         this.connectionData = connectionData;
     }
 
-    public void insertNewTransaction() {
+    public void insertNewTransaction_Query() {
         String default_verification_status_value = "Not Verified";
         String default_control_number_value = null;
         int default_sender_employee_value = 1;
@@ -267,7 +267,7 @@ public class TransactionQueries extends DatabaseConnection {
         }
     }
 
-    public List<TransactionQueries> selectAllTransactions() {
+    public List<TransactionQueries> selectAllTransactions_Query() {
         List<TransactionQueries> transactions = new ArrayList<>();
         try {
             super.getConnectedToDatabaseHost();
@@ -313,7 +313,7 @@ public class TransactionQueries extends DatabaseConnection {
         return transactions;
     }
 
-    public boolean updateTransaction(int transactionId) {
+    public boolean updateTransaction_Query(int transactionId) {
         try {
             super.getConnectedToDatabaseHost();
             try (PreparedStatement statement = connection.prepareStatement("UPDATE `transactions` SET "
@@ -353,7 +353,7 @@ public class TransactionQueries extends DatabaseConnection {
         }
     }
 
-    public boolean verifyTransaction(int transactionId) {
+    public boolean verifyTransaction_Query(int transactionId) {
         String updated_verification_status_value = "Verified";
         try {
             super.getConnectedToDatabaseHost();
@@ -372,7 +372,7 @@ public class TransactionQueries extends DatabaseConnection {
         }
     }
 
-    public boolean sendMoney(int transactionId) {
+    public boolean sendMoney_Query(int transactionId) {
         String updated_withdrawal_status_value = "Not Withdrawn";
         try {
             super.getConnectedToDatabaseHost();
@@ -398,7 +398,7 @@ public class TransactionQueries extends DatabaseConnection {
         }
     }
 
-    public boolean withdrawMoney(int transactionId) {
+    public boolean withdrawMoney_Query(int transactionId) {
         String updated_withdrawal_status_value = "Withdrawn";
         try {
             super.getConnectedToDatabaseHost();
@@ -422,7 +422,7 @@ public class TransactionQueries extends DatabaseConnection {
         }
     }
 
-    public boolean deleteTransaction(int transactionId) {
+    public boolean deleteTransaction_Query(int transactionId) {
         try {
             super.getConnectedToDatabaseHost();
             try (PreparedStatement statement = connection.prepareStatement("DELETE FROM `transactions` WHERE `transaction_id` = ?;")) {
