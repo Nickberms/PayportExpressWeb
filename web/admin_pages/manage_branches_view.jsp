@@ -10,7 +10,7 @@
         <script type="text/javascript" src="admin_scripts.js"></script>
         <%BranchWebServices service = new BranchWebServices();%>
     </head>
-    <body>        
+    <body>
         <%
             String action = request.getParameter("action");
             try {

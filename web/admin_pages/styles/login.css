@@ -1,0 +1,22 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Nov 4, 2023, 9:49:56 PM
+    Author     : KAPITAL_B
+*/
+
+.login_page{
+    width:100vw;
+    overflow:hidden;
+}
+
+.login_panel{
+    width:50%;
+    border: 1px solid gray;
+    border-radius: 10px;
+    margin:30px auto;
+    background-color: white;
+}

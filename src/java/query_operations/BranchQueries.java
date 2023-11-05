@@ -99,7 +99,7 @@ public class BranchQueries extends DatabaseConnection {
         this.connectionData = connectionData;
     }
 
-    public void insertNewBranch_Query() {
+    public void insertNewBranch() {
         String default_operation_status_value = "Active";
         try {
             super.getConnectedToDatabaseHost();
@@ -214,4 +214,7 @@ public class BranchQueries extends DatabaseConnection {
             return false;
         }
     }
+    
+    
+  
 }

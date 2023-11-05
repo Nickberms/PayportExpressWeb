@@ -16,7 +16,7 @@ public class BranchWebServices {
         insertNewBranch.setBranchName(branch_name);
         insertNewBranch.setAddress(address);
         insertNewBranch.setContactInformation(contact_information);
-        insertNewBranch.insertNewBranch_Query();
+        insertNewBranch.insertNewBranch();
     }
 
     @WebMethod(operationName = "selectAllBranches")
@@ -74,4 +74,6 @@ public class BranchWebServices {
         BranchQueries deleteBranch = new BranchQueries();
         return deleteBranch.deleteBranch_Query(branchId);
     }
+    
+
 }
