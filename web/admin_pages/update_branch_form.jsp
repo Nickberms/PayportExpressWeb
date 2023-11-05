@@ -8,7 +8,7 @@
         <title>Update Branch</title>
         <link rel="stylesheet" type="text/css" href="admin_styles.css">
         <script type="text/javascript" src="admin_scripts.js"></script>
-        <%BranchWebServices service = new BranchWebServices();%>
+        <%BranchWebServices branch_service = new BranchWebServices();%>
     </head>
     <body>
         <%
@@ -28,7 +28,7 @@
                     String address = town + ", " + municipality + ", " + province;
                     String contactInformation = request.getParameter("contactInformation");
                     try {
-                        service.updateBranch(branchId, operationStatus, branchName, address, contactInformation);
+                        branch_service.updateBranch(branchId, operationStatus, branchName, address, contactInformation);
                         response.sendRedirect("manage_branches_view.jsp");
                     } catch (Exception error) {
                         error.printStackTrace();
@@ -47,7 +47,7 @@
                 if (branchIdStr != null && !branchIdStr.isEmpty()) {
                     try {
                         branchId = Integer.parseInt(branchIdStr);
-                        branch = service.selectBranch(branchId);
+                        branch = branch_service.selectBranch(branchId);
                     } catch (Exception error) {
                         error.printStackTrace();
                     }
@@ -59,9 +59,9 @@
                 String province = addressParts.length > 2 ? addressParts[2].trim() : "";
                 %>
                 <div>
-                    <h2>Branch Details</h2>
                     <label for="branchId">Branch ID:</label>
                     <input type="text" id="branchId" name="branchId" value="<%= branch[0]%>" readonly><br>
+                    <h3>Status and Name</h3>
                     <label for="operationStatus">Operation Status:</label>
                     <select id="operationStatus" name="operationStatus">
                         <option value="Active" <%= "Active".equals(branch[1].trim()) ? "selected" : ""%>>Active</option>
@@ -69,6 +69,7 @@
                     </select><br>
                     <label for="branchName">Branch Name:</label>
                     <input type="text" id="branchName" name="branchName" value="<%= branch[2]%>" oninput="LettersOnly(this)" required><br>
+                    <h3>Address and Contact</h3>
                     <label for="town">Town:</label>
                     <input type="text" id="town" name="town" value="<%= town%>" oninput="LettersOnly(this)" required><br>
                     <label for="municipality">Municipality:</label>

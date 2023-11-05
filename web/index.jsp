@@ -25,6 +25,7 @@
     
     </head>
     <body>
+<<<<<<< HEAD
         
         <div class="container-fluid p-0">
             <div class="landing_page">
@@ -59,5 +60,13 @@
        
         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+=======
+        <br><form action="add_transaction_form.jsp">
+            <input type="submit" value="Go to Add Transaction Form">
+        </form><br>
+        <form action="employee_login.jsp">
+            <input type="submit" value="Go to Employee Login">
+        </form>
+>>>>>>> 42fd065f84fe14cb39d294c161c43e5aef6dfbfd
     </body>
 </html>

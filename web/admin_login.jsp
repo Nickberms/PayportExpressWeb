@@ -4,6 +4,7 @@
 <%@page import="java.util.*"%>
 
 <!DOCTYPE html>
+<<<<<<< HEAD:web/admin_pages/admin_login.jsp
 
 
 
@@ -98,4 +99,23 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   </body>
+=======
+<html>
+    <head>
+        <title>Admin Login</title>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <script type="text/javascript" src="scripts.js"></script>
+    </head>
+    <body>
+        <form action="admin_pages/manage_employees_view.jsp">
+            <h2>Admin Login</h2>
+            <label for="emailAddress">Email Address:</label>
+            <input type="text" id="emailAddress" name="emailAddress" required><br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br><br>
+            <input type="submit" value="Log In">
+        </form>
+        <p><a href="employee_login.jsp">Log in as Employee</a></p>
+    </body>
+>>>>>>> 42fd065f84fe14cb39d294c161c43e5aef6dfbfd:web/admin_login.jsp
 </html>

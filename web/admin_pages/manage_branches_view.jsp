@@ -8,7 +8,7 @@
         <title>Manage Branches</title>
         <link rel="stylesheet" type="text/css" href="admin_styles.css">
         <script type="text/javascript" src="admin_scripts.js"></script>
-        <%BranchWebServices service = new BranchWebServices();%>
+        <%BranchWebServices branch_service = new BranchWebServices();%>
     </head>
     <body>
         <%
@@ -17,7 +17,7 @@
                 if (action.equals("delete")) {
                     String branchIdParam = request.getParameter("branchId");
                     int branchId = Integer.parseInt(branchIdParam);
-                    service.deleteBranch(branchId);
+                    branch_service.deleteBranch(branchId);
                     response.sendRedirect("manage_branches_view.jsp");
                 }
             } catch (Exception error) {
@@ -25,6 +25,9 @@
             }
         %>
         <h2>Branches Table</h2>
+        <form action="manage_employees_view.jsp">
+            <input type="submit" value="Go to Employees Table">
+        </form><br>
         <form action="add_branch_form.jsp">
             <input type="submit" value="Add New Branch">
         </form><br>
@@ -41,7 +44,7 @@
             </thead>
             <tbody>
                 <%
-                    List<String[]> branches = service.selectAllBranches();
+                    List<String[]> branches = branch_service.selectAllBranches();
                     for (String[] branch : branches) {
                 %>
                 <tr>

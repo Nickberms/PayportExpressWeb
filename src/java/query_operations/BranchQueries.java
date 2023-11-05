@@ -13,7 +13,7 @@ public class BranchQueries extends DatabaseConnection {
     private String contact_information;
     private Timestamp date_created;
     private Timestamp date_modified;
-    private Collection<TransactionQueries> connectionData;
+    private Collection<BranchQueries> connectionData;
 
     public BranchQueries() {
     }
@@ -91,11 +91,11 @@ public class BranchQueries extends DatabaseConnection {
         this.date_modified = date_modified;
     }
 
-    public Collection<TransactionQueries> getConnectionData() {
+    public Collection<BranchQueries> getConnectionData() {
         return connectionData;
     }
 
-    public void setConnectionData(Collection<TransactionQueries> connectionData) {
+    public void setConnectionData(Collection<BranchQueries> connectionData) {
         this.connectionData = connectionData;
     }
 
