@@ -6,9 +6,9 @@
 <html>
     <head>
         <title>Add New Transaction</title>
-        <link rel="stylesheet" type="text/css" href="public_styles.css">
-        <script type="text/javascript" src="public_scripts.js"></script>
-        <%TransactionWebServices service = new TransactionWebServices();%>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <script type="text/javascript" src="scripts.js"></script>
+        <%TransactionWebServices transaction_service = new TransactionWebServices();%>
     </head>
     <body>        
         <%
@@ -50,7 +50,7 @@
                     String amount = request.getParameter("amount");
                     boolean insertionResult = false;
                     try {
-                        service.insertNewTransaction(senderName, senderContactNumber, receiverName, receiverContactNumber, amount);
+                        transaction_service.insertNewTransaction(senderName, senderContactNumber, receiverName, receiverContactNumber, amount);
                         insertionResult = true;
                     } catch (Exception error) {
                         error.printStackTrace();
@@ -63,7 +63,7 @@
                 } else if (action.equals("verify")) {
                     String transactionIdParam = request.getParameter("transactionId");
                     int transactionId = Integer.parseInt(transactionIdParam);
-                    service.verifyTransaction(transactionId);
+                    transaction_service.verifyTransaction(transactionId);
                     response.sendRedirect("add_transaction_form.jsp");
                 } else if (action.equals("send")) {
                     // Execute code for the "Send" action
@@ -74,7 +74,7 @@
                 } else if (action.equals("delete")) {
                     String transactionIdParam = request.getParameter("transactionId");
                     int transactionId = Integer.parseInt(transactionIdParam);
-                    service.deleteTransaction(transactionId);
+                    transaction_service.deleteTransaction(transactionId);
                     response.sendRedirect("add_transaction_form.jsp");
                 }
             } catch (Exception error) {
@@ -166,7 +166,7 @@
             </thead>
             <tbody>
                 <%
-                    List<String[]> transactions = service.selectAllTransactions();
+                    List<String[]> transactions = transaction_service.selectAllTransactions();
                     for (String[] transaction : transactions) {
                 %>
                 <tr>

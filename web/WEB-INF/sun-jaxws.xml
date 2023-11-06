@@ -3,4 +3,5 @@
   <endpoint implementation="web_services.TransactionWebServices" name="TransactionWebServices" url-pattern="/TransactionWebServices"/>
   <endpoint implementation="web_services.BranchWebServices" name="BranchWebServices" url-pattern="/BranchWebServices"/>
   <endpoint implementation="web_services.AuthWebServices" name="AuthWebServices" url-pattern="/AuthWebServices"/>
+  <endpoint implementation="web_services.EmployeeWebServices" name="EmployeeWebServices" url-pattern="/EmployeeWebServices"/>
 </endpoints>

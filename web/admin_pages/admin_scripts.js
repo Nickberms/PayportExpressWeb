@@ -29,3 +29,12 @@ function AmountOnly(inputField) {
     // Set the cleaned value back in the input field
     inputField.value = cleanedValue;
 }
+function EmailOnly(inputField) {
+    // Regular expression to allow only email address characters
+    var pattern = /^[a-z0-9@.]*$/;
+    var inputValue = inputField.value;
+    if (!pattern.test(inputValue)) {
+        // Remove invalid characters
+        inputField.value = inputValue.replace(/[^a-z0-9@.]/g, '');
+    }
+}

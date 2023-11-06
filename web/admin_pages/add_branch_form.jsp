@@ -8,7 +8,7 @@
         <title>Add New Branch</title>
         <link rel="stylesheet" type="text/css" href="admin_styles.css">
         <script type="text/javascript" src="admin_scripts.js"></script>
-        <%BranchWebServices service = new BranchWebServices();%>
+        <%BranchWebServices branch_service = new BranchWebServices();%>
     </head>
     <body>  
         <%
@@ -26,7 +26,7 @@
                     String address = town + ", " + municipality + ", " + province;
                     String contactInformation = request.getParameter("contactInformation");
                     try {
-                        service.insertNewBranch(branchName, address, contactInformation);
+                        branch_service.insertNewBranch(branchName, address, contactInformation);
                         response.sendRedirect("manage_branches_view.jsp");
                     } catch (Exception error) {
                         error.printStackTrace();

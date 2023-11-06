@@ -18,6 +18,11 @@
         <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>EmployeeWebServices</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     <servlet-mapping>
         <servlet-name>TransactionWebServices</servlet-name>
         <url-pattern>/TransactionWebServices</url-pattern>
@@ -29,6 +34,10 @@
     <servlet-mapping>
         <servlet-name>AuthWebServices</servlet-name>
         <url-pattern>/AuthWebServices</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EmployeeWebServices</servlet-name>
+        <url-pattern>/EmployeeWebServices</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

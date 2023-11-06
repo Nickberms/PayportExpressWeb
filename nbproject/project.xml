@@ -28,6 +28,7 @@
         </data>
         <spellchecker-wordlist xmlns="http://www.netbeans.org/ns/spellchecker-wordlist/1">
             <word>Admin</word>
+            <word>Birthdate</word>
             <word>deleteTransaction</word>
             <word>insertNewTransaction</word>
             <word>JSP</word>
