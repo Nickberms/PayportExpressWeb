@@ -9,69 +9,71 @@
         <title>Update Employee</title>
         <link rel="stylesheet" type="text/css" href="admin_styles.css">
         <script type="text/javascript" src="admin_scripts.js"></script>
-        <%EmployeeWebServices employee_service = new EmployeeWebServices();%>
         <%BranchWebServices branch_service = new BranchWebServices();%>
+        <%EmployeeWebServices employee_service = new EmployeeWebServices();%>
     </head>
     <body>  
         <%
             String action = request.getParameter("action");
             try {
-//                if (action.equals("update")) {
-//                    int branchStationed = Integer.parseInt(request.getParameter("branchStationed"));
-//                    String firstName = request.getParameter("firstName");
-//                    firstName = NameFormatter.formatName(firstName);
-//                    String lastName = request.getParameter("lastName");
-//                    lastName = NameFormatter.formatName(lastName);
-//                    String birthdateString = request.getParameter("birthdate");
-//                    Date birthdate = null;
-//                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//                    birthdate = dateFormat.parse(birthdateString);
-//                    String sex = request.getParameter("sex");
-//                    String town = request.getParameter("town");
-//                    town = NameFormatter.formatName(town);
-//                    String municipality = request.getParameter("municipality");
-//                    municipality = NameFormatter.formatName(municipality);
-//                    String province = request.getParameter("province");
-//                    province = NameFormatter.formatName(province);
-//                    String address = town + ", " + municipality + ", " + province;
-//                    String phoneNumber = request.getParameter("phoneNumber");
-//                    String emailAddress = request.getParameter("emailAddress");
-//                    String password = request.getParameter("password");
-//                    try {
-//                        employee_service.insertNewEmployee(branchStationed, firstName, lastName, birthdate, sex, address, phoneNumber, emailAddress, password);
-//                        response.sendRedirect("manage_employees_view.jsp");
-//                    } catch (Exception error) {
-//                        error.printStackTrace();
-//                    }
-//                }
+                if (action.equals("update")) {
+                    int employeeId = Integer.parseInt(request.getParameter("employeeId"));
+                    int branchStationed = Integer.parseInt(request.getParameter("branchStationed"));
+                    String workingStatus = request.getParameter("workingStatus");
+                    String firstName = request.getParameter("firstName");
+                    firstName = NameFormatter.formatName(firstName);
+                    String lastName = request.getParameter("lastName");
+                    lastName = NameFormatter.formatName(lastName);
+                    String birthdateString = request.getParameter("birthdate");
+                    Date birthdate = null;
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    birthdate = dateFormat.parse(birthdateString);
+                    String sex = request.getParameter("sex");
+                    String town = request.getParameter("town");
+                    town = NameFormatter.formatName(town);
+                    String municipality = request.getParameter("municipality");
+                    municipality = NameFormatter.formatName(municipality);
+                    String province = request.getParameter("province");
+                    province = NameFormatter.formatName(province);
+                    String address = town + ", " + municipality + ", " + province;
+                    String phoneNumber = request.getParameter("phoneNumber");
+                    String emailAddress = request.getParameter("emailAddress");
+                    String password = request.getParameter("password");
+                    try {
+                        employee_service.updateEmployee(employeeId, branchStationed, workingStatus, firstName, lastName, birthdate, sex, address, phoneNumber, emailAddress, password);
+                        response.sendRedirect("manage_employees_view.jsp");
+                    } catch (Exception error) {
+                        error.printStackTrace();
+                    }
+                }
             } catch (Exception error) {
                 error.printStackTrace();
             }
         %>
         <h2>Update Payport Express Employee</h2>
         <form action="update_employee_form.jsp?action=update" method="post">
-            <div>
-                <%
-                    String employeeIdStr = request.getParameter("employeeId");
-                    int employeeId = 0;
-                    String[] employee = null;
-                    if (employeeIdStr != null && !employeeIdStr.isEmpty()) {
-                        try {
-                            employeeId = Integer.parseInt(employeeIdStr);
-                            employee = employee_service.selectEmployee(employeeId);
-                        } catch (Exception error) {
-                            error.printStackTrace();
-                        }
+            <div> <%
+                String employeeIdStr = request.getParameter("employeeId");
+                int employeeId = 0;
+                String[] employee = null;
+                if (employeeIdStr != null && !employeeIdStr.isEmpty()) {
+                    try {
+                        employeeId = Integer.parseInt(employeeIdStr);
+                        employee = employee_service.selectEmployee(employeeId);
+                    } catch (Exception error) {
+                        error.printStackTrace();
                     }
-                    String fullAddress = employee[7];
-                    String[] addressParts = fullAddress.split(",");
-                    String town = addressParts.length > 0 ? addressParts[0].trim() : "";
-                    String municipality = addressParts.length > 1 ? addressParts[1].trim() : "";
-                    String province = addressParts.length > 2 ? addressParts[2].trim() : "";
+                }
+                String fullAddress = employee[7];
+                String[] addressParts = fullAddress.split(",");
+                String town = addressParts.length > 0 ? addressParts[0].trim() : "";
+                String municipality = addressParts.length > 1 ? addressParts[1].trim() : "";
+                String province = addressParts.length > 2 ? addressParts[2].trim() : "";
                 %>
                 <div>
-                    <h2>Employee Details</h2>
-                    <h3>Branch Station</h3>
+                    <label for="employeeId">Employee ID:</label>
+                    <input type="text" id="employeeId" name="employeeId" value="<%= employee[0]%>" readonly><br>
+                    <h3>Branch and Status</h3>
                     <label for="branchStationed">Branch Station:</label>
                     <select id="branchStationed" name="branchStationed">
                         <%
@@ -84,7 +86,6 @@
                             }
                         %>
                     </select><br>
-                    
                     <label for="workingStatus">Working Status:</label>
                     <select id="workingStatus" name="workingStatus">
                         <option value="Active" <%= "Active".equals(employee[2].trim()) ? "selected" : ""%>>Active</option>
@@ -92,26 +93,12 @@
                         <option value="Fired" <%= "Fired".equals(employee[2].trim()) ? "selected" : ""%>>Fired</option>
                     </select><br>
                     <h3>Basic Information</h3>
-                    <label for="employeeId">Employee ID:</label>
-                    <input type="text" id="employeeId" name="employeeId" value="<%= employee[0]%>" readonly><br>
                     <label for="firstName">First Name:</label>
                     <input type="text" id="firstName" name="firstName" value="<%= employee[3]%>" oninput="LettersOnly(this)" required><br>
                     <label for="lastName">Last Name:</label>
                     <input type="text" id="lastName" name="lastName" value="<%= employee[4]%>" oninput="LettersOnly(this)" required><br>
-
                     <label for="birthdate">Birthdate:</label>
-                    <input type="date" id="birthdate" name="birthdate" value="2023-11-06" required><br>
-
-
-
-
-
-
-
-
-
-
-
+                    <input type="date" id="birthdate" name="birthdate" value="<%= employee[5]%>" required><br>
                     <label for="sex">Sex:</label>
                     <select id="sex" name="sex">
                         <option value="Male" <%= "Male".equals(employee[6].trim()) ? "selected" : ""%>>Male</option>

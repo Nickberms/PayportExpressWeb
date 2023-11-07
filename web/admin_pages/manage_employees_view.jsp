@@ -5,11 +5,11 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Manage Branches</title>
+        <title>Manage Employees</title>
         <link rel="stylesheet" type="text/css" href="admin_styles.css">
         <script type="text/javascript" src="admin_scripts.js"></script>
-        <%EmployeeWebServices employee_service = new EmployeeWebServices();%>
         <%BranchWebServices branch_service = new BranchWebServices();%>
+        <%EmployeeWebServices employee_service = new EmployeeWebServices();%>
     </head>
     <body>        
         <%
@@ -18,7 +18,7 @@
                 if (action.equals("delete")) {
                     String employeeIdParam = request.getParameter("employeeId");
                     int employeeId = Integer.parseInt(employeeIdParam);
-                    //service.deleteEmployee(employeeId);
+                    employee_service.deleteEmployee(employeeId);
                     response.sendRedirect("manage_employees_view.jsp");
                 }
             } catch (Exception error) {
@@ -26,6 +26,9 @@
             }
         %>
         <h2>Employees Table</h2>
+        <form action="manage_branches_view.jsp">
+            <input type="submit" value="Go to Branches Table">
+        </form><br>
         <form action="add_employee_form.jsp">
             <input type="submit" value="Add New Employee">
         </form><br>

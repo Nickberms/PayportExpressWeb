@@ -237,8 +237,6 @@ public class EmployeeQueries extends DatabaseConnection {
         return employees;
     }
 
-   
-
     public EmployeeQueries selectEmployee_Query(int employeeId) {
         EmployeeQueries employee = null;
         try {
@@ -279,4 +277,53 @@ public class EmployeeQueries extends DatabaseConnection {
         return employee;
     }
 
+    public boolean updateEmployee_Query(int employeeId) {
+        try {
+            super.getConnectedToDatabaseHost();
+            try (PreparedStatement statement = connection.prepareStatement("UPDATE `employees` SET "
+                    + "`branch_stationed` = ?, "
+                    + "`working_status` = ?, "
+                    + "`first_name` = ?, "
+                    + "`last_name` = ?, "
+                    + "`birthdate` = ?, "
+                    + "`sex` = ?, "
+                    + "`address` = ?, "
+                    + "`phone_number` = ?, "
+                    + "`email_address` = ?, "
+                    + "`password` = ?, "
+                    + "`date_modified` = NOW() "
+                    + "WHERE `employee_id` = ?;")) {
+                statement.setInt(1, branch_stationed);
+                statement.setString(2, working_status);
+                statement.setString(3, first_name);
+                statement.setString(4, last_name);
+                statement.setDate(5, new java.sql.Date(birthdate.getTime()));
+                statement.setString(6, sex);
+                statement.setString(7, address);
+                statement.setString(8, phone_number);
+                statement.setString(9, email_address);
+                statement.setString(10, password);
+                statement.setInt(11, employeeId);
+                int rowsAffected = statement.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (SQLException error) {
+            System.err.println(error);
+            return false;
+        }
+    }
+
+    public boolean deleteEmployee_Query(int employeeId) {
+        try {
+            super.getConnectedToDatabaseHost();
+            try (PreparedStatement statement = connection.prepareStatement("DELETE FROM `employees` WHERE `employee_id` = ?;")) {
+                statement.setInt(1, employeeId);
+                int rowsAffected = statement.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (SQLException error) {
+            System.err.println(error);
+            return false;
+        }
+    }
 }

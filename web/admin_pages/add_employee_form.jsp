@@ -9,8 +9,8 @@
         <title>Add New Employee</title>
         <link rel="stylesheet" type="text/css" href="admin_styles.css">
         <script type="text/javascript" src="admin_scripts.js"></script>
-        <%EmployeeWebServices employee_service = new EmployeeWebServices();%>
         <%BranchWebServices branch_service = new BranchWebServices();%>
+        <%EmployeeWebServices employee_service = new EmployeeWebServices();%>
     </head>
     <body>  
         <%
@@ -52,8 +52,7 @@
         <form action="add_employee_form.jsp?action=insert" method="post">
             <div>
                 <div>
-                    <h2>Employee Details</h2>
-                    <h3>Branch Station</h3>
+                    <h3>Branch</h3>
                     <label for="branchStationed">Branch Station:</label>
                     <select id="branchStationed" name="branchStationed">
                         <%

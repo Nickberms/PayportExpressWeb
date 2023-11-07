@@ -25,6 +25,9 @@
             }
         %>
         <h2>Branches Table</h2>
+        <form action="manage_employees_view.jsp">
+            <input type="submit" value="Go to Employees Table">
+        </form><br>
         <form action="add_branch_form.jsp">
             <input type="submit" value="Add New Branch">
         </form><br>
