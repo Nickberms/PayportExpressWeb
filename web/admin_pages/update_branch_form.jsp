@@ -2,6 +2,7 @@
 <%@page import="extra_features.*"%>
 <%@page import="web_services.*"%>
 <%@page import="java.util.*"%>
+<%@page import="javax.servlet.http.*"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,6 +13,24 @@
     </head>
     <body>
         <%
+            HttpServletResponse httpResponse = response;
+            httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            httpResponse.setHeader("Pragma", "no-cache");
+            httpResponse.setDateHeader("Expires", 0);
+            session = request.getSession(false);
+            String branchIdParam = request.getParameter("branchId");
+            if (session == null || session.getAttribute("adminId") == null) {
+                response.sendRedirect("../admin_login.jsp");
+                return;
+            } else if (branchIdParam == null || branchIdParam.trim().isEmpty()) {
+                String referer = request.getHeader("Referer");
+                if (referer != null && !referer.isEmpty()) {
+                    response.sendRedirect(referer);
+                } else {
+                    response.sendRedirect("manage_branches_view.jsp");
+                }
+                return;
+            }
             String action = request.getParameter("action");
             try {
                 if (action.equals("update")) {
@@ -26,9 +45,8 @@
                     String province = request.getParameter("province");
                     province = NameFormatter.formatName(province);
                     String address = town + ", " + municipality + ", " + province;
-                    String contactInformation = request.getParameter("contactInformation");
                     try {
-                        branch_service.updateBranch(branchId, operationStatus, branchName, address, contactInformation);
+                        branch_service.updateBranch(branchId, operationStatus, branchName, address);
                         response.sendRedirect("manage_branches_view.jsp");
                     } catch (Exception error) {
                         error.printStackTrace();
@@ -69,18 +87,16 @@
                     </select><br>
                     <label for="branchName">Branch Name:</label>
                     <input type="text" id="branchName" name="branchName" value="<%= branch[2]%>" oninput="LettersOnly(this)" required><br>
-                    <h3>Address and Contact</h3>
+                    <h3>Address</h3>
                     <label for="town">Town:</label>
                     <input type="text" id="town" name="town" value="<%= town%>" oninput="LettersOnly(this)" required><br>
                     <label for="municipality">Municipality:</label>
                     <input type="text" id="municipality" name="municipality" value="<%= municipality%>" oninput="LettersOnly(this)" required><br>
                     <label for="province">Province:</label>
                     <input type="text" id="province" name="province" value="<%= province%>" oninput="LettersOnly(this)" required><br>
-                    <label for="contactInformation">Contact Information:</label>
-                    <input type="text" id="contactInformation" name="contactInformation" value="<%= branch[4]%>" oninput="NumbersOnly(this)" required><br><br>
                 </div>
             </div>
-            <div>
+            <div><br>
                 <button type="submit">Save</button>
             </div>
         </form><br>

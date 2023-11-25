@@ -102,7 +102,7 @@
                 error.printStackTrace();
             }
         %>
-        <h2>Manage Transactions</h2>
+        <br><br><h2>Manage Transactions</h2>
         <table>
             <thead>
                 <tr>

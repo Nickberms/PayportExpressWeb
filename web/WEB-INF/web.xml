@@ -14,12 +14,12 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
-        <servlet-name>AuthWebServices</servlet-name>
+        <servlet-name>EmployeeWebServices</servlet-name>
         <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
-        <servlet-name>EmployeeWebServices</servlet-name>
+        <servlet-name>AdminWebServices</servlet-name>
         <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -32,12 +32,12 @@
         <url-pattern>/BranchWebServices</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>AuthWebServices</servlet-name>
-        <url-pattern>/AuthWebServices</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>EmployeeWebServices</servlet-name>
         <url-pattern>/EmployeeWebServices</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AdminWebServices</servlet-name>
+        <url-pattern>/AdminWebServices</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

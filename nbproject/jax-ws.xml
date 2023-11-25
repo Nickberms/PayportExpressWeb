@@ -7,11 +7,11 @@
     <service name="BranchWebServices">
       <implementation-class>web_services.BranchWebServices</implementation-class>
     </service>
-    <service name="AuthWebServices">
-      <implementation-class>web_services.AuthWebServices</implementation-class>
-    </service>
     <service name="EmployeeWebServices">
       <implementation-class>web_services.EmployeeWebServices</implementation-class>
+    </service>
+    <service name="AdminWebServices">
+      <implementation-class>web_services.AdminWebServices</implementation-class>
     </service>
   </services>
   <clients/>

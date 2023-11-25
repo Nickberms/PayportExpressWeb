@@ -2,6 +2,7 @@
 <%@page import="extra_features.*"%>
 <%@page import="web_services.*"%>
 <%@page import="java.util.*"%>
+<%@page import="javax.servlet.http.*"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,6 +13,14 @@
     </head>
     <body>        
         <%
+            HttpServletResponse httpResponse = response;
+            httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            httpResponse.setHeader("Pragma", "no-cache");
+            httpResponse.setDateHeader("Expires", 0);
+            session = request.getSession(false);
+            if (session != null) {
+                session.invalidate();
+            }
             String action = request.getParameter("action");
             try {
                 if (action.equals("insert")) {
@@ -69,7 +78,7 @@
         <form action="add_transaction_form.jsp?action=insert" method="post">
             <div>
                 <div>
-                    <h2>Sender Details</h2>
+                    <h3>Sender Details</h3>
                     <label for="senderFirstName">First Name:</label>
                     <input type="text" id="senderFirstName" name="senderFirstName" oninput="LettersOnly(this)" required><br>
                     <label for="senderMiddleName">Middle Name:</label>
@@ -94,7 +103,7 @@
                     <input type="text" id="senderContactNumber" name="senderContactNumber" oninput="NumbersOnly(this)" required><br>
                 </div>
                 <div>
-                    <h2>Receiver Details</h2>
+                    <h3>Receiver Details</h3>
                     <label for="receiverFirstName">First Name:</label>
                     <input type="text" id="receiverFirstName" name="receiverFirstName" oninput="LettersOnly(this)" required><br>
                     <label for="receiverMiddleName">Middle Name:</label>
@@ -120,7 +129,7 @@
                 </div>
             </div>
             <div>
-                <h2>Amount Money</h2>
+                <h3>Amount Money</h3>
                 <label for="amount">Amount Money:</label>
                 <input type="text" id="amount" name="amount" oninput="AmountOnly(this)" required><br><br>
                 <button type="submit">Submit</button>

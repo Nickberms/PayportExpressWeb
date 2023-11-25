@@ -2,6 +2,6 @@
 <endpoints version="2.0" xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime">
   <endpoint implementation="web_services.TransactionWebServices" name="TransactionWebServices" url-pattern="/TransactionWebServices"/>
   <endpoint implementation="web_services.BranchWebServices" name="BranchWebServices" url-pattern="/BranchWebServices"/>
-  <endpoint implementation="web_services.AuthWebServices" name="AuthWebServices" url-pattern="/AuthWebServices"/>
   <endpoint implementation="web_services.EmployeeWebServices" name="EmployeeWebServices" url-pattern="/EmployeeWebServices"/>
+  <endpoint implementation="web_services.AdminWebServices" name="AdminWebServices" url-pattern="/AdminWebServices"/>
 </endpoints>

@@ -2,6 +2,7 @@
 <%@page import="extra_features.*"%>
 <%@page import="web_services.*"%>
 <%@page import="java.util.*"%>
+<%@page import="javax.servlet.http.*"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -10,9 +11,37 @@
         <script type="text/javascript" src="admin_scripts.js"></script>
         <%BranchWebServices branch_service = new BranchWebServices();%>
     </head>
-    <body>        
+    <body>     
         <%
+            HttpServletResponse httpResponse = response;
+            httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            httpResponse.setHeader("Pragma", "no-cache");
+            httpResponse.setDateHeader("Expires", 0);
+            session = request.getSession(false);
+            String adminId = (String) session.getAttribute("adminId");
+            if (session == null || session.getAttribute("adminId") == null) {
+                response.sendRedirect("../admin_login.jsp");
+                return;
+            }
+            String firstName = (String) session.getAttribute("firstName");
+            String lastName = (String) session.getAttribute("lastName");
             String action = request.getParameter("action");
+            try {
+                if (action.equals("logout")) {
+                    if (session != null) {
+                        session.invalidate();
+                    }
+                    response.sendRedirect("../admin_login.jsp");
+                    return;
+                }
+            } catch (Exception error) {
+                error.printStackTrace();
+            }
+        %>
+        <h2>Welcome <%= firstName%> <%= lastName%></h2>
+        <p>Admin ID: <%= adminId%></p>
+        <a href="manage_branches_view.jsp?action=logout">Logout</a>
+        <%
             try {
                 if (action.equals("delete")) {
                     String branchIdParam = request.getParameter("branchId");
@@ -24,7 +53,7 @@
                 error.printStackTrace();
             }
         %>
-        <h2>Branches Table</h2>
+        <br><br><h2>Manage Branches</h2>
         <form action="manage_employees_view.jsp">
             <input type="submit" value="Go to Employees Table">
         </form><br>
@@ -38,7 +67,6 @@
                     <th>Operation Status</th>
                     <th>Branch Name</th>
                     <th>Address</th>
-                    <th>Contact Information</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -52,7 +80,6 @@
                     <td><%= (branch[1] != null && !branch[1].isEmpty()) ? branch[1] : ""%></td>
                     <td><%= (branch[2] != null && !branch[2].isEmpty()) ? branch[2] : ""%></td>
                     <td><%= (branch[3] != null && !branch[3].isEmpty()) ? branch[3] : ""%></td>
-                    <td><%= (branch[4] != null && !branch[4].isEmpty()) ? branch[4] : ""%></td>
                     <td>
                         <a href="update_branch_form.jsp?branchId=<%= branch[0]%>">Update</a>
                         <a href="manage_branches_view.jsp?action=delete&branchId=<%= branch[0]%>">Delete</a>

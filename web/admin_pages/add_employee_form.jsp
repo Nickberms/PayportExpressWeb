@@ -3,6 +3,7 @@
 <%@page import="web_services.*"%>
 <%@page import="java.text.*"%>
 <%@page import="java.util.*"%>
+<%@page import="javax.servlet.http.*"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,6 +15,15 @@
     </head>
     <body>  
         <%
+            HttpServletResponse httpResponse = response;
+            httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            httpResponse.setHeader("Pragma", "no-cache");
+            httpResponse.setDateHeader("Expires", 0);
+            session = request.getSession(false);
+            if (session == null || session.getAttribute("adminId") == null) {
+                response.sendRedirect("../admin_login.jsp");
+                return;
+            }
             String action = request.getParameter("action");
             try {
                 if (action.equals("insert")) {

@@ -3,6 +3,7 @@
 <%@page import="web_services.*"%>
 <%@page import="java.text.*"%>
 <%@page import="java.util.*"%>
+<%@page import="javax.servlet.http.*"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -14,6 +15,24 @@
     </head>
     <body>  
         <%
+            HttpServletResponse httpResponse = response;
+            httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            httpResponse.setHeader("Pragma", "no-cache");
+            httpResponse.setDateHeader("Expires", 0);
+            session = request.getSession(false);
+            String employeeIdParam = request.getParameter("employeeId");
+            if (session == null || session.getAttribute("adminId") == null) {
+                response.sendRedirect("../admin_login.jsp");
+                return;
+            } else if (employeeIdParam == null || employeeIdParam.trim().isEmpty()) {
+                String referer = request.getHeader("Referer");
+                if (referer != null && !referer.isEmpty()) {
+                    response.sendRedirect(referer);
+                } else {
+                    response.sendRedirect("manage_employees_view.jsp");
+                }
+                return;
+            }
             String action = request.getParameter("action");
             try {
                 if (action.equals("update")) {
@@ -81,7 +100,7 @@
                             for (String[] branch : branches) {
                                 boolean isSelected = employee != null && employee[1].equals(branch[0]);
                         %>
-                        <option value="<%= branch[0]%>" <%= isSelected ? "selected" : ""%>><%= branch[2]%></option>
+                        <option value="<%= branch[0]%>" <%= isSelected ? "selected" : ""%>><%= branch[0]%> <%= branch[2]%></option>
                         <%
                             }
                         %>

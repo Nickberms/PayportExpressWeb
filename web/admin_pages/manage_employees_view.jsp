@@ -2,6 +2,7 @@
 <%@page import="extra_features.*"%>
 <%@page import="web_services.*"%>
 <%@page import="java.util.*"%>
+<%@page import="javax.servlet.http.*"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,7 +14,35 @@
     </head>
     <body>        
         <%
+            HttpServletResponse httpResponse = response;
+            httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            httpResponse.setHeader("Pragma", "no-cache");
+            httpResponse.setDateHeader("Expires", 0);
+            session = request.getSession(false);
+            String adminId = (String) session.getAttribute("adminId");
+            if (session == null || session.getAttribute("adminId") == null) {
+                response.sendRedirect("../admin_login.jsp");
+                return;
+            }
+            String firstName = (String) session.getAttribute("firstName");
+            String lastName = (String) session.getAttribute("lastName");
             String action = request.getParameter("action");
+            try {
+                if (action.equals("logout")) {
+                    if (session != null) {
+                        session.invalidate();
+                    }
+                    response.sendRedirect("../admin_login.jsp");
+                    return;
+                }
+            } catch (Exception error) {
+                error.printStackTrace();
+            }
+        %>
+        <h2>Welcome <%= firstName%> <%= lastName%></h2>
+        <p>Admin ID: <%= adminId%></p>
+        <a href="manage_employees_view.jsp?action=logout">Logout</a>
+        <%
             try {
                 if (action.equals("delete")) {
                     String employeeIdParam = request.getParameter("employeeId");
@@ -25,7 +54,7 @@
                 error.printStackTrace();
             }
         %>
-        <h2>Employees Table</h2>
+        <br><br><h2>Manage Employees</h2>
         <form action="manage_branches_view.jsp">
             <input type="submit" value="Go to Branches Table">
         </form><br>
@@ -61,7 +90,7 @@
                 %>
                 <tr>
                     <td><%= employee[0]%></td>
-                    <td><%= branchName%></td>
+                    <td><%= employee[1]%> <%= branchName%></td>
                     <td><%= employee[2]%></td>
                     <td><%= employee[3]%></td>
                     <td><%= employee[4]%></td>

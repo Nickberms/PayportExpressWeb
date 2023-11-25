@@ -8,6 +8,7 @@
         <title>Employee Login</title>
         <link rel="stylesheet" type="text/css" href="styles.css">
         <script type="text/javascript" src="scripts.js"></script>
+        <%EmployeeWebServices employee_service = new EmployeeWebServices();%>
     </head>
     <body>
         <%
@@ -21,10 +22,9 @@
             }
             String errorMessage = "";
             if ("POST".equals(request.getMethod())) {
-                EmployeeWebServices service = new EmployeeWebServices();
                 String emailAddress = request.getParameter("emailAddress");
                 String password = request.getParameter("password");
-                String[] employee = service.employeeLogin(emailAddress, password);
+                String[] employee = employee_service.employeeLogin(emailAddress, password);
                 if (employee != null) {
                     String working_status = employee[2];
                     if ("Fired".equals(working_status)) {

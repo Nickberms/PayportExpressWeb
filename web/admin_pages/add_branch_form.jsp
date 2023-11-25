@@ -2,6 +2,7 @@
 <%@page import="extra_features.*"%>
 <%@page import="web_services.*"%>
 <%@page import="java.util.*"%>
+<%@page import="javax.servlet.http.*"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,6 +13,15 @@
     </head>
     <body>  
         <%
+            HttpServletResponse httpResponse = response;
+            httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            httpResponse.setHeader("Pragma", "no-cache");
+            httpResponse.setDateHeader("Expires", 0);
+            session = request.getSession(false);
+            if (session == null || session.getAttribute("adminId") == null) {
+                response.sendRedirect("../admin_login.jsp");
+                return;
+            }
             String action = request.getParameter("action");
             try {
                 if (action.equals("insert")) {
@@ -24,9 +34,8 @@
                     String province = request.getParameter("province");
                     province = NameFormatter.formatName(province);
                     String address = town + ", " + municipality + ", " + province;
-                    String contactInformation = request.getParameter("contactInformation");
                     try {
-                        branch_service.insertNewBranch(branchName, address, contactInformation);
+                        branch_service.insertNewBranch(branchName, address);
                         response.sendRedirect("manage_branches_view.jsp");
                     } catch (Exception error) {
                         error.printStackTrace();
@@ -43,17 +52,15 @@
                     <h3>Name</h3>
                     <label for="branchName">Branch Name:</label>
                     <input type="text" id="branchName" name="branchName" oninput="LettersOnly(this)" required><br>
-                    <h3>Address and Contact</h3>
+                    <h3>Address</h3>
                     <label for="town">Town:</label>
                     <input type="text" id="town" name="town" oninput="LettersOnly(this)" required><br>
                     <label for="municipality">Municipality:</label>
                     <input type="text" id="municipality" name="municipality" oninput="LettersOnly(this)" required><br>
                     <label for="province">Province:</label>
                     <input type="text" id="province" name="province" oninput="LettersOnly(this)" required><br>
-                    <label for="contactInformation">Contact Information:</label>
-                    <input type="text" id="contactInformation" name="contactInformation" oninput="NumbersOnly(this)" required><br><br>
                 </div>
-            </div>
+            </div><br>
             <div>
                 <button type="submit">Save</button>
             </div>

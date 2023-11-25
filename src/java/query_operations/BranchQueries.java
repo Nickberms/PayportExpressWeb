@@ -10,7 +10,6 @@ public class BranchQueries extends DatabaseConnection {
     private String operation_status;
     private String branch_name;
     private String address;
-    private String contact_information;
     private Timestamp date_created;
     private Timestamp date_modified;
     private Collection<BranchQueries> connectionData;
@@ -23,14 +22,12 @@ public class BranchQueries extends DatabaseConnection {
             String operation_status,
             String branch_name,
             String address,
-            String contact_information,
             Timestamp date_created,
             Timestamp date_modified) {
         this.branch_id = branch_id;
         this.operation_status = operation_status;
         this.branch_name = branch_name;
         this.address = address;
-        this.contact_information = contact_information;
         this.date_created = date_created;
         this.date_modified = date_modified;
     }
@@ -67,14 +64,6 @@ public class BranchQueries extends DatabaseConnection {
         this.address = address;
     }
 
-    public String getContactInformation() {
-        return contact_information;
-    }
-
-    public void setContactInformation(String contact_information) {
-        this.contact_information = contact_information;
-    }
-
     public Timestamp getDateCreated() {
         return date_created;
     }
@@ -100,21 +89,19 @@ public class BranchQueries extends DatabaseConnection {
     }
 
     public void insertNewBranch_Query() {
-        String default_operation_status_value = "Active";
+        String activeStatus = "Active";
         try {
             super.getConnectedToDatabaseHost();
             try (PreparedStatement statement = connection.prepareStatement("INSERT INTO `branches` "
                     + "(`operation_status`, "
                     + "`branch_name`, "
                     + "`address`, "
-                    + "`contact_information`, "
                     + "`date_created`, "
                     + "`date_modified`) "
-                    + "VALUES (?, ?, ?, ?, NOW(), NOW());")) {
-                statement.setString(1, default_operation_status_value);
+                    + "VALUES (?, ?, ?, NOW(), NOW());")) {
+                statement.setString(1, activeStatus);
                 statement.setString(2, branch_name);
                 statement.setString(3, address);
-                statement.setString(4, contact_information);
                 statement.execute();
                 statement.close();
             }
@@ -130,8 +117,7 @@ public class BranchQueries extends DatabaseConnection {
             try (PreparedStatement statement = connection.prepareStatement("SELECT `branch_id`, "
                     + "`operation_status`, "
                     + "`branch_name`, "
-                    + "`address`, "
-                    + "`contact_information` "
+                    + "`address` "
                     + "FROM `branches`;"); ResultSet result = statement.executeQuery()) {
                 while (result.next()) {
                     BranchQueries branch = new BranchQueries();
@@ -139,7 +125,6 @@ public class BranchQueries extends DatabaseConnection {
                     branch.setOperationStatus(result.getString("operation_status"));
                     branch.setBranchName(result.getString("branch_name"));
                     branch.setAddress(result.getString("address"));
-                    branch.setContactInformation(result.getString("contact_information"));
                     branches.add(branch);
                 }
             }
@@ -156,8 +141,7 @@ public class BranchQueries extends DatabaseConnection {
             try (PreparedStatement statement = connection.prepareStatement("SELECT `branch_id`, "
                     + "`operation_status`, "
                     + "`branch_name`, "
-                    + "`address`, "
-                    + "`contact_information` "
+                    + "`address` "
                     + "FROM `branches` WHERE `branch_id` = ?;")) {
                 statement.setInt(1, branchId);
                 try (ResultSet result = statement.executeQuery()) {
@@ -167,7 +151,6 @@ public class BranchQueries extends DatabaseConnection {
                         branch.setOperationStatus(result.getString("operation_status"));
                         branch.setBranchName(result.getString("branch_name"));
                         branch.setAddress(result.getString("address"));
-                        branch.setContactInformation(result.getString("contact_information"));
                     }
                 }
             }
@@ -184,14 +167,12 @@ public class BranchQueries extends DatabaseConnection {
                     + "`operation_status` = ?, "
                     + "`branch_name` = ?, "
                     + "`address` = ?, "
-                    + "`contact_information` = ?, "
                     + "`date_modified` = NOW() "
                     + "WHERE `branch_id` = ?;")) {
                 statement.setString(1, operation_status);
                 statement.setString(2, branch_name);
                 statement.setString(3, address);
-                statement.setString(4, contact_information);
-                statement.setInt(5, branchId);
+                statement.setInt(4, branchId);
                 int rowsAffected = statement.executeUpdate();
                 return rowsAffected > 0;
             }
