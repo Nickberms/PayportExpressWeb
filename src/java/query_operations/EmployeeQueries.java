@@ -166,7 +166,7 @@ public class EmployeeQueries extends DatabaseConnection {
     }
 
     public void insertNewEmployee_Query() {
-        String default_working_status_value = "Active";
+        String activeStatus = "Active";
         try {
             super.getConnectedToDatabaseHost();
             try (PreparedStatement statement = connection.prepareStatement("INSERT INTO `employees` "
@@ -184,7 +184,7 @@ public class EmployeeQueries extends DatabaseConnection {
                     + "`date_modified`) "
                     + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW());")) {
                 statement.setInt(1, branch_stationed);
-                statement.setString(2, default_working_status_value);
+                statement.setString(2, activeStatus);
                 statement.setString(3, first_name);
                 statement.setString(4, last_name);
                 statement.setDate(5, new java.sql.Date(birthdate.getTime()));
@@ -325,5 +325,35 @@ public class EmployeeQueries extends DatabaseConnection {
             System.err.println(error);
             return false;
         }
+    }
+
+    public EmployeeQueries employeeLogin_Query(String emailAddress, String password) {
+        EmployeeQueries employee = null;
+        try {
+            super.getConnectedToDatabaseHost();
+            try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM `employees` WHERE `email_address` = ? AND `password` = ?;")) {
+                statement.setString(1, emailAddress);
+                statement.setString(2, password);
+                try (ResultSet result = statement.executeQuery()) {
+                    if (result.next()) {
+                        employee = new EmployeeQueries();
+                        employee.setEmployeeId(result.getInt("employee_id"));
+                        employee.setBranchStationed(result.getInt("branch_stationed"));
+                        employee.setWorkingStatus(result.getString("working_status"));
+                        employee.setFirstName(result.getString("first_name"));
+                        employee.setLastName(result.getString("last_name"));
+                        employee.setBirthdate(result.getDate("birthdate"));
+                        employee.setSex(result.getString("sex"));
+                        employee.setAddress(result.getString("address"));
+                        employee.setPhoneNumber(result.getString("phone_number"));
+                        employee.setEmailAddress(result.getString("email_address"));
+                        employee.setPassword(result.getString("password"));
+                    }
+                }
+            }
+        } catch (SQLException error) {
+            System.err.println(error);
+        }
+        return employee;
     }
 }

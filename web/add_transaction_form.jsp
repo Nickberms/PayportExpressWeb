@@ -60,22 +60,6 @@
                     } else {
                         out.println("Sorry, an error occurred while processing your request. Please try again later or contact support.");
                     }
-                } else if (action.equals("verify")) {
-                    String transactionIdParam = request.getParameter("transactionId");
-                    int transactionId = Integer.parseInt(transactionIdParam);
-                    transaction_service.verifyTransaction(transactionId);
-                    response.sendRedirect("add_transaction_form.jsp");
-                } else if (action.equals("send")) {
-                    // Execute code for the "Send" action
-                    // Add your Send action code here
-                } else if (action.equals("withdraw")) {
-                    // Execute code for the "Withdraw" action
-                    // Add your Withdraw action code here
-                } else if (action.equals("delete")) {
-                    String transactionIdParam = request.getParameter("transactionId");
-                    int transactionId = Integer.parseInt(transactionIdParam);
-                    transaction_service.deleteTransaction(transactionId);
-                    response.sendRedirect("add_transaction_form.jsp");
                 }
             } catch (Exception error) {
                 error.printStackTrace();
