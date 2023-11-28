@@ -103,6 +103,11 @@
             }
         %>
         <br><br><h2>Manage Transactions</h2>
+        <form action="<%=request.getRequestURI()%>" method="get">
+            <label for="keyword">Search Transactions:</label>
+            <input type="text" id="keyword" name="keyword">
+            <input type="submit" value="Search">
+        </form><br>
         <table>
             <thead>
                 <tr>
@@ -126,33 +131,52 @@
             <tbody>
                 <%
                     List<String[]> transactions = transaction_service.selectAllTransactions();
+                    Map<String, String> employeeMap = new HashMap<>();
+                    List<String[]> employees = employee_service.selectAllEmployees();
+                    for (String[] employee : employees) {
+                        employeeMap.put(employee[0], employee[3] + " " + employee[4]);
+                    }
+                    Map<String, String> branchMap = new HashMap<>();
+                    List<String[]> branches = branch_service.selectAllBranches();
+                    for (String[] branch : branches) {
+                        branchMap.put(branch[0], branch[2]);
+                    }
+                    String keyword = request.getParameter("keyword");
+                    if (keyword != null) {
+                        keyword = keyword.toLowerCase();
+                    }
                     for (String[] transaction : transactions) {
-                        if (!"Removed".equals(transaction[1])) {
+                        boolean matchesKeyword = true;
+                        if (keyword != null && !keyword.trim().isEmpty()) {
+                            matchesKeyword = false;
+                            for (int i = 0; i < transaction.length; i++) {
+                                String field = transaction[i];
+                                if (field != null && field.toLowerCase().contains(keyword)) {
+                                    matchesKeyword = true;
+                                    break;
+                                }
+                                if ((i == 7 || i == 8) && employeeMap.containsKey(field) && employeeMap.get(field).toLowerCase().contains(keyword)) {
+                                    matchesKeyword = true;
+                                    break;
+                                }
+                                if ((i == 9 || i == 10) && branchMap.containsKey(field) && branchMap.get(field).toLowerCase().contains(keyword)) {
+                                    matchesKeyword = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (matchesKeyword && !"Removed".equals(transaction[1])) {
                 %>
                 <tr>
-                    <td><%= (transaction[0] != null && !transaction[0].isEmpty()) ? transaction[0] : ""%></td>
-                    <td><%= (transaction[1] != null && !transaction[1].isEmpty()) ? transaction[1] : ""%></td>
-                    <td><%= (transaction[2] != null && !transaction[2].isEmpty()) ? transaction[2] : ""%></td>
-                    <td><%= (transaction[3] != null && !transaction[3].isEmpty()) ? transaction[3] : ""%></td>
-                    <td><%= (transaction[4] != null && !transaction[4].isEmpty()) ? transaction[4] : ""%></td>
-                    <td><%= (transaction[5] != null && !transaction[5].isEmpty()) ? transaction[5] : ""%></td>
-                    <td><%= (transaction[6] != null && !transaction[6].isEmpty()) ? transaction[6] : ""%></td>
-                    <%
-                        Map<String, String> employeeMap = new HashMap<>();
-                        List<String[]> employees = employee_service.selectAllEmployees();
-                        for (String[] employee : employees) {
-                            employeeMap.put(employee[0], employee[3] + " " + employee[4]);
-                        }
-                    %>
+                    <td><%= transaction[0]%></td>
+                    <td><%= transaction[1]%></td>
+                    <td><%= transaction[2]%></td>
+                    <td><%= transaction[3]%></td>
+                    <td><%= transaction[4]%></td>
+                    <td><%= transaction[5]%></td>
+                    <td><%= transaction[6]%></td>
                     <td><%= ("0".equals(transaction[7])) ? "" : transaction[7] + " " + employeeMap.getOrDefault(transaction[7], "")%></td>
                     <td><%= ("0".equals(transaction[8])) ? "" : transaction[8] + " " + employeeMap.getOrDefault(transaction[8], "")%></td>
-                    <%
-                        Map<String, String> branchMap = new HashMap<>();
-                        List<String[]> branches = branch_service.selectAllBranches();
-                        for (String[] branch : branches) {
-                            branchMap.put(branch[0], branch[2]);
-                        }
-                    %>
                     <td><%= ("0".equals(transaction[9])) ? "" : transaction[9] + " " + branchMap.getOrDefault(transaction[9], "")%></td>
                     <td><%= ("0".equals(transaction[10])) ? "" : transaction[10] + " " + branchMap.getOrDefault(transaction[10], "")%></td>
                     <td><%= (transaction[11] != null && !transaction[11].isEmpty()) ? transaction[11] : ""%></td>

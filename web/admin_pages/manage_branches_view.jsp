@@ -60,6 +60,11 @@
         <form action="add_branch_form.jsp">
             <input type="submit" value="Add New Branch">
         </form><br>
+        <form action="<%=request.getRequestURI()%>" method="get">
+            <label for="keyword">Search Branches:</label>
+            <input type="text" id="keyword" name="keyword">
+            <input type="submit" value="Search">
+        </form><br>
         <table>
             <thead>
                 <tr>
@@ -73,19 +78,35 @@
             <tbody>
                 <%
                     List<String[]> branches = branch_service.selectAllBranches();
+                    String keyword = request.getParameter("keyword");
+                    if (keyword != null) {
+                        keyword = keyword.toLowerCase();
+                    }
                     for (String[] branch : branches) {
+                        boolean matchesKeyword = true;
+                        if (keyword != null && !keyword.trim().isEmpty()) {
+                            matchesKeyword = false;
+                            for (String field : branch) {
+                                if (field != null && field.toLowerCase().contains(keyword)) {
+                                    matchesKeyword = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (matchesKeyword) {
                 %>
                 <tr>
-                    <td><%= (branch[0] != null && !branch[0].isEmpty()) ? branch[0] : ""%></td>
-                    <td><%= (branch[1] != null && !branch[1].isEmpty()) ? branch[1] : ""%></td>
-                    <td><%= (branch[2] != null && !branch[2].isEmpty()) ? branch[2] : ""%></td>
-                    <td><%= (branch[3] != null && !branch[3].isEmpty()) ? branch[3] : ""%></td>
+                    <td><%= branch[0]%></td>
+                    <td><%= branch[1]%></td>
+                    <td><%= branch[2]%></td>
+                    <td><%= branch[3]%></td>
                     <td>
                         <a href="update_branch_form.jsp?branchId=<%= branch[0]%>">Update</a>
-                        <a href="manage_branches_view.jsp?action=delete&branchId=<%= branch[0]%>">Delete</a>
+                        <a href="manage_branches_view.jsp?action=delete&branchId=<%= branch[0]%>" onclick="return confirm('Delete branch? You might not be able to if it still holds records');">Delete</a>
                     </td>
                 </tr>
                 <%
+                        }
                     }
                 %>   
             </tbody>

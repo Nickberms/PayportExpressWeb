@@ -61,6 +61,11 @@
         <form action="add_employee_form.jsp">
             <input type="submit" value="Add New Employee">
         </form><br>
+        <form action="<%=request.getRequestURI()%>" method="get">
+            <label for="keyword">Search Employees:</label>
+            <input type="text" id="keyword" name="keyword">
+            <input type="submit" value="Search">
+        </form><br>
         <table>
             <thead>
                 <tr>
@@ -79,14 +84,32 @@
             </thead>
             <tbody>
                 <%
+                    List<String[]> employees = employee_service.selectAllEmployees();
                     HashMap<Integer, String> branchMap = new HashMap<>();
                     List<String[]> branches = branch_service.selectAllBranches();
                     for (String[] branch : branches) {
                         branchMap.put(Integer.parseInt(branch[0]), branch[2]);
                     }
-                    List<String[]> employees = employee_service.selectAllEmployees();
+                    String keyword = request.getParameter("keyword");
+                    if (keyword != null) {
+                        keyword = keyword.toLowerCase();
+                    }
                     for (String[] employee : employees) {
                         String branchName = branchMap.getOrDefault(Integer.parseInt(employee[1]), "No Branch");
+                        boolean matchesKeyword = true;
+                        if (keyword != null && !keyword.trim().isEmpty()) {
+                            matchesKeyword = false;
+                            for (String field : employee) {
+                                if (field != null && field.toLowerCase().contains(keyword)) {
+                                    matchesKeyword = true;
+                                    break;
+                                }
+                            }
+                            if (branchName.toLowerCase().contains(keyword)) {
+                                matchesKeyword = true;
+                            }
+                        }
+                        if (matchesKeyword) {
                 %>
                 <tr>
                     <td><%= employee[0]%></td>
@@ -101,10 +124,11 @@
                     <td><%= employee[9]%></td>
                     <td>
                         <a href="update_employee_form.jsp?employeeId=<%= employee[0]%>">Update</a>
-                        <a href="manage_employees_view.jsp?action=delete&employeeId=<%= employee[0]%>">Delete</a>
+                        <a href="manage_employees_view.jsp?action=delete&employeeId=<%= employee[0]%>" onclick="return confirm('Delete employee? You might not be able to if it still holds records');">Delete</a>
                     </td>
                 </tr>
                 <%
+                        }
                     }
                 %>   
             </tbody>

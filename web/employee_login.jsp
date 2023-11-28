@@ -28,7 +28,7 @@
                 if (employee != null) {
                     String working_status = employee[2];
                     if ("Fired".equals(working_status)) {
-                        errorMessage = "Access is prohibited for former employees";
+                        errorMessage = "Access is prohibited for former employees.";
                     } else {
                         session = request.getSession(true);
                         session.setAttribute("employeeId", employee[0]);
@@ -39,7 +39,7 @@
                         return;
                     }
                 } else {
-                    errorMessage = "Invalid email address or password";
+                    errorMessage = "Invalid email address or password.";
                 }
             }
         %>
@@ -50,7 +50,10 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required><br><br>
             <input type="submit" value="Log In"><br><br>
-            <div><%= errorMessage%></div>
+            <div><%= errorMessage%></div><br>
+        </form>
+        <form action="add_transaction_form.jsp">
+            <input type="submit" value="Go to Add Transaction Form">
         </form>
         <p><a href="admin_login.jsp">Log in as Admin</a></p>
     </body>

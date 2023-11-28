@@ -1,6 +1,8 @@
 package web_services;
 
 import query_operations.*;
+import java.sql.*;
+import java.time.format.*;
 import java.util.*;
 import javax.jws.*;
 
@@ -28,6 +30,7 @@ public class TransactionWebServices {
         ArrayList<String[]> transactionStr = new ArrayList<>();
         TransactionQueries selectAllTransactions = new TransactionQueries();
         List<TransactionQueries> transactions = selectAllTransactions.selectAllTransactions_Query();
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yy h:mm a");
         if (transactions != null) {
             transactions.forEach((transaction) -> {
                 String[] str = new String[14];
@@ -42,9 +45,11 @@ public class TransactionWebServices {
                 str[8] = String.valueOf(transaction.getReceiverEmployee());
                 str[9] = String.valueOf(transaction.getBranchSent());
                 str[10] = String.valueOf(transaction.getBranchWithdrawn());
-                str[11] = transaction.getDateSent() != null ? transaction.getDateSent().toString() : "";
+                Timestamp dateSent = transaction.getDateSent();
+                Timestamp dateWithdrawn = transaction.getDateWithdrawn();
+                str[11] = (dateSent != null) ? dateFormat.format(dateSent.toLocalDateTime()) : "";
                 str[12] = transaction.getWithdrawalStatus();
-                str[13] = transaction.getDateWithdrawn() != null ? transaction.getDateWithdrawn().toString() : "";
+                str[13] = (dateWithdrawn != null) ? dateFormat.format(dateWithdrawn.toLocalDateTime()) : "";
                 transactionStr.add(str);
             });
         }

@@ -131,9 +131,12 @@
             <div>
                 <h3>Amount Money</h3>
                 <label for="amount">Amount Money:</label>
-                <input type="text" id="amount" name="amount" oninput="AmountOnly(this)" required><br><br>
+                <input type="text" id="amount" name="amount" oninput="NumbersOnly(this)" required><br><br>
                 <button type="submit">Submit</button>
             </div>
-        </form><br><br>
+        </form><br>
+        <form action="index.jsp">
+            <input type="submit" value="Cancel">
+        </form>
     </body>
 </html>

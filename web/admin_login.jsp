@@ -33,7 +33,7 @@
                     response.sendRedirect("admin_pages/manage_employees_view.jsp");
                     return;
                 } else {
-                    errorMessage = "Invalid email address or password";
+                    errorMessage = "Invalid email address or password.";
                 }
             }
         %>
@@ -44,7 +44,10 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required><br><br>
             <input type="submit" value="Log In"><br><br>
-            <div><%= errorMessage%></div>
+            <div><%= errorMessage%></div><br>
+        </form>
+        <form action="add_transaction_form.jsp">
+            <input type="submit" value="Go to Add Transaction Form">
         </form>
         <p><a href="employee_login.jsp">Log in as Employee</a></p>
     </body>
