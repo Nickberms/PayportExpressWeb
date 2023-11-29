@@ -69,7 +69,7 @@
                             List<String[]> branches = branch_service.selectAllBranches();
                             for (String[] branch : branches) {
                         %>
-                        <option value="<%= branch[0]%>"><%= branch[2]%></option>
+                        <option value="<%= branch[0]%>"><%= branch[0]%> <%= branch[2]%></option>
                         <%
                             }
                         %>
