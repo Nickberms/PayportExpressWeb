@@ -7,18 +7,18 @@ import java.util.*;
 public class TransactionQueries extends DatabaseConnection {
 
     private Integer control_number;
-    private String verification_status;
+    private String fee_status;
+    private Float service_fee;
     private String sender_name;
     private String sender_contact_number;
     private String receiver_name;
     private String receiver_contact_number;
-    private String amount;
+    private Float amount;
     private Integer sender_employee;
     private Integer receiver_employee;
     private Integer branch_sent;
     private Integer branch_withdrawn;
     private Timestamp date_sent;
-    private String withdrawal_status;
     private Timestamp date_withdrawn;
     private Timestamp date_created;
     private Timestamp date_modified;
@@ -29,23 +29,24 @@ public class TransactionQueries extends DatabaseConnection {
 
     public TransactionQueries(
             Integer control_number,
-            String verification_status,
+            String fee_status,
+            Float service_fee,
             String sender_name,
             String sender_contact_number,
             String receiver_name,
             String receiver_contact_number,
-            String amount,
+            Float amount,
             Integer sender_employee,
             Integer receiver_employee,
             Integer branch_sent,
             Integer branch_withdrawn,
             Timestamp date_sent,
-            String withdrawal_status,
             Timestamp date_withdrawn,
             Timestamp date_created,
             Timestamp date_modified) {
         this.control_number = control_number;
-        this.verification_status = verification_status;
+        this.fee_status = fee_status;
+        this.service_fee = service_fee;
         this.sender_name = sender_name;
         this.sender_contact_number = sender_contact_number;
         this.receiver_name = receiver_name;
@@ -56,7 +57,6 @@ public class TransactionQueries extends DatabaseConnection {
         this.branch_sent = branch_sent;
         this.branch_withdrawn = branch_withdrawn;
         this.date_sent = date_sent;
-        this.withdrawal_status = withdrawal_status;
         this.date_withdrawn = date_withdrawn;
         this.date_created = date_created;
         this.date_modified = date_modified;
@@ -70,12 +70,20 @@ public class TransactionQueries extends DatabaseConnection {
         this.control_number = control_number;
     }
 
-    public String getVerificationStatus() {
-        return verification_status;
+    public String getFeeStatus() {
+        return fee_status;
     }
 
-    public void setVerificationStatus(String verification_status) {
-        this.verification_status = verification_status;
+    public void setFeeStatus(String fee_status) {
+        this.fee_status = fee_status;
+    }
+
+    public Float getServiceFee() {
+        return service_fee;
+    }
+
+    public void setServiceFee(Float service_fee) {
+        this.service_fee = service_fee;
     }
 
     public String getSenderName() {
@@ -110,11 +118,11 @@ public class TransactionQueries extends DatabaseConnection {
         this.receiver_contact_number = receiver_contact_number;
     }
 
-    public String getAmount() {
+    public Float getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(Float amount) {
         this.amount = amount;
     }
 
@@ -158,14 +166,6 @@ public class TransactionQueries extends DatabaseConnection {
         this.date_sent = date_sent;
     }
 
-    public String getWithdrawalStatus() {
-        return withdrawal_status;
-    }
-
-    public void setWithdrawalStatus(String withdrawal_status) {
-        this.withdrawal_status = withdrawal_status;
-    }
-
     public Timestamp getDateWithdrawn() {
         return date_withdrawn;
     }
@@ -199,11 +199,12 @@ public class TransactionQueries extends DatabaseConnection {
     }
 
     public void insertNewTransaction_Query() {
-        String notVerifiedStatus = "Not Verified";
+        String unpaidStatus = "Unpaid";
         try {
             super.getConnectedToDatabaseHost();
             try (PreparedStatement statement = connection.prepareStatement("INSERT INTO `transactions` "
-                    + "(`verification_status`, "
+                    + "(`fee_status`, "
+                    + "`service_fee`, "
                     + "`sender_name`, "
                     + "`sender_contact_number`, "
                     + "`receiver_name`, "
@@ -211,13 +212,14 @@ public class TransactionQueries extends DatabaseConnection {
                     + "`amount`, "
                     + "`date_created`, "
                     + "`date_modified`) "
-                    + "VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW());")) {
-                statement.setString(1, notVerifiedStatus);
-                statement.setString(2, sender_name);
-                statement.setString(3, sender_contact_number);
-                statement.setString(4, receiver_name);
-                statement.setString(5, receiver_contact_number);
-                statement.setString(6, amount);
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, NOW(), NOW());")) {
+                statement.setString(1, unpaidStatus);
+                statement.setFloat(2, service_fee);
+                statement.setString(3, sender_name);
+                statement.setString(4, sender_contact_number);
+                statement.setString(5, receiver_name);
+                statement.setString(6, receiver_contact_number);
+                statement.setFloat(7, amount);
                 statement.execute();
                 statement.close();
             }
@@ -231,7 +233,8 @@ public class TransactionQueries extends DatabaseConnection {
         try {
             super.getConnectedToDatabaseHost();
             try (PreparedStatement statement = connection.prepareStatement("SELECT `control_number`, "
-                    + "`verification_status`, "
+                    + "`fee_status`, "
+                    + "`service_fee`, "
                     + "`sender_name`, "
                     + "`sender_contact_number`, "
                     + "`receiver_name`, "
@@ -242,24 +245,23 @@ public class TransactionQueries extends DatabaseConnection {
                     + "`branch_sent`, "
                     + "`branch_withdrawn`, "
                     + "`date_sent`, "
-                    + "`withdrawal_status`, "
                     + "`date_withdrawn` "
                     + "FROM `transactions`;"); ResultSet result = statement.executeQuery()) {
                 while (result.next()) {
                     TransactionQueries transaction = new TransactionQueries();
                     transaction.setControlNumber(result.getInt("control_number"));
-                    transaction.setVerificationStatus(result.getString("verification_status"));
+                    transaction.setFeeStatus(result.getString("fee_status"));
+                    transaction.setServiceFee(result.getFloat("service_fee"));
                     transaction.setSenderName(result.getString("sender_name"));
                     transaction.setSenderContactNumber(result.getString("sender_contact_number"));
                     transaction.setReceiverName(result.getString("receiver_name"));
                     transaction.setReceiverContactNumber(result.getString("receiver_contact_number"));
-                    transaction.setAmount(result.getString("amount"));
+                    transaction.setAmount(result.getFloat("amount"));
                     transaction.setSenderEmployee(result.getInt("sender_employee"));
                     transaction.setReceiverEmployee(result.getInt("receiver_employee"));
                     transaction.setBranchSent(result.getInt("branch_sent"));
                     transaction.setBranchWithdrawn(result.getInt("branch_withdrawn"));
                     transaction.setDateSent(result.getTimestamp("date_sent"));
-                    transaction.setWithdrawalStatus(result.getString("withdrawal_status"));
                     transaction.setDateWithdrawn(result.getTimestamp("date_withdrawn"));
                     transactions.add(transaction);
                 }
@@ -275,7 +277,8 @@ public class TransactionQueries extends DatabaseConnection {
         try {
             super.getConnectedToDatabaseHost();
             try (PreparedStatement statement = connection.prepareStatement("SELECT `control_number`, "
-                    + "`verification_status`, "
+                    + "`fee_status`, "
+                    + "`service_fee`, "
                     + "`sender_name`, "
                     + "`sender_contact_number`, "
                     + "`receiver_name`, "
@@ -286,7 +289,6 @@ public class TransactionQueries extends DatabaseConnection {
                     + "`branch_sent`, "
                     + "`branch_withdrawn`, "
                     + "`date_sent`, "
-                    + "`withdrawal_status`, "
                     + "`date_withdrawn` "
                     + "FROM `transactions` WHERE `control_number` = ?;")) {
                 statement.setInt(1, controlNumber);
@@ -294,18 +296,18 @@ public class TransactionQueries extends DatabaseConnection {
                     if (result.next()) {
                         transaction = new TransactionQueries();
                         transaction.setControlNumber(result.getInt("control_number"));
-                        transaction.setVerificationStatus(result.getString("verification_status"));
+                        transaction.setFeeStatus(result.getString("fee_status"));
+                        transaction.setServiceFee(result.getFloat("service_fee"));
                         transaction.setSenderName(result.getString("sender_name"));
                         transaction.setSenderContactNumber(result.getString("sender_contact_number"));
                         transaction.setReceiverName(result.getString("receiver_name"));
                         transaction.setReceiverContactNumber(result.getString("receiver_contact_number"));
-                        transaction.setAmount(result.getString("amount"));
+                        transaction.setAmount(result.getFloat("amount"));
                         transaction.setSenderEmployee(result.getInt("sender_employee"));
                         transaction.setReceiverEmployee(result.getInt("receiver_employee"));
                         transaction.setBranchSent(result.getInt("branch_sent"));
                         transaction.setBranchWithdrawn(result.getInt("branch_withdrawn"));
                         transaction.setDateSent(result.getTimestamp("date_sent"));
-                        transaction.setWithdrawalStatus(result.getString("withdrawal_status"));
                         transaction.setDateWithdrawn(result.getTimestamp("date_withdrawn"));
                     }
                 }
@@ -316,15 +318,15 @@ public class TransactionQueries extends DatabaseConnection {
         return transaction;
     }
 
-    public boolean verifyTransaction_Query(int controlNumber) {
-        String verifiedStatus = "Verified";
+    public boolean payServiceFee_Query(int controlNumber) {
+        String paidStatus = "Paid";
         try {
             super.getConnectedToDatabaseHost();
             try (PreparedStatement statement = connection.prepareStatement("UPDATE `transactions` SET "
-                    + "`verification_status` = ?, "
+                    + "`fee_status` = ?, "
                     + "`date_modified` = NOW() "
                     + "WHERE `control_number` = ?;")) {
-                statement.setString(1, verifiedStatus);
+                statement.setString(1, paidStatus);
                 statement.setInt(2, controlNumber);
                 int rowsAffected = statement.executeUpdate();
                 return rowsAffected > 0;
@@ -335,21 +337,18 @@ public class TransactionQueries extends DatabaseConnection {
         }
     }
 
-    public boolean sendMoney_Query(int controlNumber) {
-        String notWithdrawnStatus = "Not Withdrawn";
+    public boolean sendAmount_Query(int controlNumber) {
         try {
             super.getConnectedToDatabaseHost();
             try (PreparedStatement statement = connection.prepareStatement("UPDATE `transactions` SET "
                     + "`sender_employee` = ?, "
                     + "`branch_sent` = ?, "
                     + "`date_sent` = NOW(), "
-                    + "`withdrawal_status` = ?, "
                     + "`date_modified` = NOW() "
                     + "WHERE `control_number` = ?;")) {
                 statement.setInt(1, sender_employee);
                 statement.setInt(2, branch_sent);
-                statement.setString(3, notWithdrawnStatus);
-                statement.setInt(4, controlNumber);
+                statement.setInt(3, controlNumber);
                 int rowsAffected = statement.executeUpdate();
                 return rowsAffected > 0;
             }
@@ -359,21 +358,18 @@ public class TransactionQueries extends DatabaseConnection {
         }
     }
 
-    public boolean withdrawMoney_Query(int controlNumber) {
-        String withdrawnStatus = "Withdrawn";
+    public boolean withdrawAmount_Query(int controlNumber) {
         try {
             super.getConnectedToDatabaseHost();
             try (PreparedStatement statement = connection.prepareStatement("UPDATE `transactions` SET "
                     + "`receiver_employee` = ?, "
                     + "`branch_withdrawn` = ?, "
-                    + "`withdrawal_status` = ?, "
                     + "`date_withdrawn` = NOW(), "
                     + "`date_modified` = NOW() "
                     + "WHERE `control_number` = ?;")) {
                 statement.setInt(1, receiver_employee);
                 statement.setInt(2, branch_withdrawn);
-                statement.setString(3, withdrawnStatus);
-                statement.setInt(4, controlNumber);
+                statement.setInt(3, controlNumber);
                 int rowsAffected = statement.executeUpdate();
                 return rowsAffected > 0;
             }
@@ -383,16 +379,11 @@ public class TransactionQueries extends DatabaseConnection {
         }
     }
 
-    public boolean removeTransaction_Query(int controlNumber) {
-        String removedStatus = "Removed";
+    public boolean deleteTransaction_Query(int controlNumber) {
         try {
             super.getConnectedToDatabaseHost();
-            try (PreparedStatement statement = connection.prepareStatement("UPDATE `transactions` SET "
-                    + "`verification_status` = ?, "
-                    + "`date_modified` = NOW() "
-                    + "WHERE `control_number` = ?;")) {
-                statement.setString(1, removedStatus);
-                statement.setInt(2, controlNumber);
+            try (PreparedStatement statement = connection.prepareStatement("DELETE FROM `transactions` WHERE `control_number` = ?;")) {
+                statement.setInt(1, controlNumber);
                 int rowsAffected = statement.executeUpdate();
                 return rowsAffected > 0;
             }

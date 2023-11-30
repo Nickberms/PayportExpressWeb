@@ -8,7 +8,6 @@
     <head>
         <title>Add New Transaction</title>
         <link rel="stylesheet" type="text/css" href="styles.css">
-        <script type="text/javascript" src="scripts.js"></script>
         <%TransactionWebServices transaction_service = new TransactionWebServices();%>
     </head>
     <body>        
@@ -24,11 +23,12 @@
             String action = request.getParameter("action");
             try {
                 if (action.equals("insert")) {
-                    String senderFirstName = request.getParameter("senderFirstName");
+                    Float serviceFee = Float.parseFloat(request.getParameter("serviceFee"));
+                    String senderFirstName = request.getParameter("senderFirstName").trim();
                     senderFirstName = NameFormatter.formatName(senderFirstName);
-                    String senderMiddleName = request.getParameter("senderMiddleName");
+                    String senderMiddleName = request.getParameter("senderMiddleName").trim();
                     senderMiddleName = NameFormatter.formatName(senderMiddleName);
-                    String senderLastName = request.getParameter("senderLastName");
+                    String senderLastName = request.getParameter("senderLastName").trim();
                     senderLastName = NameFormatter.formatName(senderLastName);
                     String senderNameSuffix = request.getParameter("senderNameSuffix");
                     String senderName = senderFirstName;
@@ -40,11 +40,11 @@
                         senderName += " " + senderNameSuffix;
                     }
                     String senderContactNumber = request.getParameter("senderContactNumber");
-                    String receiverFirstName = request.getParameter("receiverFirstName");
+                    String receiverFirstName = request.getParameter("receiverFirstName").trim();
                     receiverFirstName = NameFormatter.formatName(receiverFirstName);
-                    String receiverMiddleName = request.getParameter("receiverMiddleName");
+                    String receiverMiddleName = request.getParameter("receiverMiddleName").trim();
                     receiverMiddleName = NameFormatter.formatName(receiverMiddleName);
-                    String receiverLastName = request.getParameter("receiverLastName");
+                    String receiverLastName = request.getParameter("receiverLastName").trim();
                     receiverLastName = NameFormatter.formatName(receiverLastName);
                     String receiverNameSuffix = request.getParameter("receiverNameSuffix");
                     String receiverName = receiverFirstName;
@@ -56,18 +56,16 @@
                         receiverName += " " + receiverNameSuffix;
                     }
                     String receiverContactNumber = request.getParameter("receiverContactNumber");
-                    String amount = request.getParameter("amount");
-                    boolean insertionResult = false;
+                    Float amount = Float.parseFloat(request.getParameter("amount"));
                     try {
-                        transaction_service.insertNewTransaction(senderName, senderContactNumber, receiverName, receiverContactNumber, amount);
-                        insertionResult = true;
+                        if (senderFirstName.isEmpty() || senderLastName.isEmpty() || receiverFirstName.isEmpty() || receiverLastName.isEmpty() || amount <= 0) {
+                            out.println("Sorry, invalid input. Please try again.");
+                        } else {
+                            transaction_service.insertNewTransaction(serviceFee, senderName, senderContactNumber, receiverName, receiverContactNumber, amount);
+                            out.println("Submission successful. You can come to any of our branches at any time to confirm and process your transaction.");
+                        }
                     } catch (Exception error) {
                         error.printStackTrace();
-                    }
-                    if (insertionResult) {
-                        out.println("Your form has been successfully sent. We will contact you anytime for verification.");
-                    } else {
-                        out.println("Sorry, an error occurred while processing your request. Please try again later or contact support.");
                     }
                 }
             } catch (Exception error) {
@@ -100,7 +98,7 @@
                         <option value="X">X</option>
                     </select><br>
                     <label for="senderContactNumber">Contact Number:</label>
-                    <input type="text" id="senderContactNumber" name="senderContactNumber" oninput="NumbersOnly(this)" required><br>
+                    <input type="text" id="senderContactNumber" name="senderContactNumber" oninput="NumbersOnly(this)" minlength="3" maxlength="15" required><br>
                 </div>
                 <div>
                     <h3>Receiver Details</h3>
@@ -125,14 +123,37 @@
                         <option value="X">X</option>
                     </select><br>
                     <label for="receiverContactNumber">Contact Number:</label>
-                    <input type="text" id="receiverContactNumber" name="receiverContactNumber" oninput="NumbersOnly(this)" required><br>
+                    <input type="text" id="receiverContactNumber" name="receiverContactNumber" oninput="NumbersOnly(this)" minlength="3" maxlength="15" required><br>
                 </div>
             </div>
             <div>
                 <h3>Amount Money</h3>
-                <label for="amount">Amount Money:</label>
-                <input type="text" id="amount" name="amount" oninput="NumbersOnly(this)" required><br><br>
+                <label for="amount">Amount:</label>
+                <input type="text" id="amount" name="amount" oninput="NumbersOnly(this); CalculateServiceFee();" maxlength="6" required><br>
+                <label for="serviceFee">Service Fee:</label>
+                <input type="text" id="serviceFee" name="serviceFee" readonly required><br><br>
                 <button type="submit">Submit</button>
+                <script>
+                    function LettersOnly(inputField) {
+                        var pattern = /^[A-Za-z]+( [A-Za-z]+)*$/;
+                        var inputValue = inputField.value;
+                        if (!pattern.test(inputValue)) {
+                            inputField.value = inputValue.replace(/[^A-Za-z\s]/g, '').replace(/\s{2,}/g, ' ');
+                        }
+                    }
+                    function NumbersOnly(inputField) {
+                        var pattern = /^[0-9]+$/;
+                        var inputValue = inputField.value;
+                        if (!pattern.test(inputValue)) {
+                            inputField.value = inputValue.replace(/[^0-9]/g, '');
+                        }
+                    }
+                    function CalculateServiceFee() {
+                        var amount = document.getElementById('amount').value;
+                        var serviceFee = isNaN(amount) ? 0 : (parseFloat(amount) * 0.02).toFixed(2);
+                        document.getElementById('serviceFee').value = serviceFee;
+                    }
+                </script>
             </div>
         </form><br>
         <form action="index.jsp">

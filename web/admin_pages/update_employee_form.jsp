@@ -39,28 +39,32 @@
                     int employeeId = Integer.parseInt(request.getParameter("employeeId"));
                     int branchStationed = Integer.parseInt(request.getParameter("branchStationed"));
                     String workingStatus = request.getParameter("workingStatus");
-                    String firstName = request.getParameter("firstName");
+                    String firstName = request.getParameter("firstName").trim();
                     firstName = NameFormatter.formatName(firstName);
-                    String lastName = request.getParameter("lastName");
+                    String lastName = request.getParameter("lastName").trim();
                     lastName = NameFormatter.formatName(lastName);
                     String birthdateString = request.getParameter("birthdate");
                     Date birthdate = null;
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     birthdate = dateFormat.parse(birthdateString);
                     String sex = request.getParameter("sex");
-                    String town = request.getParameter("town");
+                    String town = request.getParameter("town").trim();
                     town = NameFormatter.formatName(town);
-                    String municipality = request.getParameter("municipality");
+                    String municipality = request.getParameter("municipality").trim();
                     municipality = NameFormatter.formatName(municipality);
-                    String province = request.getParameter("province");
+                    String province = request.getParameter("province").trim();
                     province = NameFormatter.formatName(province);
                     String address = town + ", " + municipality + ", " + province;
                     String phoneNumber = request.getParameter("phoneNumber");
-                    String emailAddress = request.getParameter("emailAddress");
+                    String emailAddress = request.getParameter("emailAddress").toLowerCase().trim();
                     String password = request.getParameter("password");
                     try {
-                        employee_service.updateEmployee(employeeId, branchStationed, workingStatus, firstName, lastName, birthdate, sex, address, phoneNumber, emailAddress, password);
-                        response.sendRedirect("manage_employees_view.jsp");
+                        if (firstName.isEmpty() || lastName.isEmpty() || town.isEmpty() || municipality.isEmpty() || province.isEmpty()) {
+                            out.println("Sorry, invalid input. Please try again.");
+                        } else {
+                            employee_service.updateEmployee(employeeId, branchStationed, workingStatus, firstName, lastName, birthdate, sex, address, phoneNumber, emailAddress, password);
+                            response.sendRedirect("manage_employees_view.jsp");
+                        }
                     } catch (Exception error) {
                         error.printStackTrace();
                     }
@@ -132,9 +136,9 @@
                     <input type="text" id="province" name="province" value="<%= province%>" oninput="LettersOnly(this)" required><br>
                     <h3>Credentials</h3>
                     <label for="phoneNumber">Phone Number:</label>
-                    <input type="text" id="phoneNumber" name="phoneNumber" value="<%= employee[8]%>" oninput="NumbersOnly(this)" required><br>
+                    <input type="text" id="phoneNumber" name="phoneNumber" value="<%= employee[8]%>" oninput="NumbersOnly(this)" minlength="3" maxlength="15" required><br>
                     <label for="emailAddress">Email Address:</label>
-                    <input type="email" id="emailAddress" name="emailAddress" value="<%= employee[9]%>" oninput="EmailOnly(this)" required><br>
+                    <input type="email" id="emailAddress" name="emailAddress" value="<%= employee[9]%>" required><br>
                     <label for="password">Password:</label>
                     <input type="password" id="password" name="password" value="<%= employee[10]%>" required><br><br>
                 </div>
