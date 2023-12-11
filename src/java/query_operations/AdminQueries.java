@@ -292,7 +292,8 @@ public class AdminQueries extends DatabaseConnection {
 
     /**
      * Authenticates an admin user against the database using the provided email
-     * address and password.
+     * address and password. If authentication is successful, it returns an
+     * {@code AdminQueries} object containing the admin's data.
      *
      * @param emailAddress The email address of the admin to authenticate.
      * @param password The password of the admin to authenticate.
