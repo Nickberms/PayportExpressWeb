@@ -4,9 +4,23 @@ import query_operations.*;
 import java.util.*;
 import javax.jws.*;
 
+/**
+ * The {@code BranchWebServices} class provides SOAP web services for
+ * branch-related operations. This class exposes methods for creating, retrieving,
+ * updating, and deleting branch information.
+ *
+ * @author Kein Bermejo
+ */
 @WebService(serviceName = "BranchWebServices")
 public class BranchWebServices {
 
+    /**
+     * Web service operation for inserting a new branch into the database. It
+     * takes the branch name and address as parameters.
+     *
+     * @param branchName The name of the branch to insert.
+     * @param address The address of the branch to insert.
+     */
     @WebMethod(operationName = "insertNewBranch")
     public void insertNewBranch(
             @WebParam(name = "branch_name") String branchName,
@@ -17,6 +31,14 @@ public class BranchWebServices {
         insertNewBranch.insertNewBranch_Query();
     }
 
+    /**
+     * Web service operation for retrieving all branches from the database. It
+     * returns an array list of string arrays, each representing a branch's
+     * details.
+     *
+     * @return An ArrayList of String arrays, each array containing branch
+     * details.
+     */
     @WebMethod(operationName = "selectAllBranches")
     public ArrayList<String[]> selectAllBranches() {
         ArrayList<String[]> branchStr = new ArrayList<>();
@@ -35,6 +57,15 @@ public class BranchWebServices {
         return branchStr;
     }
 
+    /**
+     * Web service operation for retrieving details of a specific branch based
+     * on its ID. It returns a string array containing the details of the
+     * specified branch if found.
+     *
+     * @param branchId The ID of the branch to retrieve.
+     * @return A String array containing the branch details, or null if not
+     * found.
+     */
     @WebMethod(operationName = "selectBranch")
     public String[] selectBranch(@WebParam(name = "branch_id") int branchId) {
         BranchQueries selectBranch = new BranchQueries();
@@ -51,6 +82,17 @@ public class BranchWebServices {
         }
     }
 
+    /**
+     * Web service operation for updating a branch's details in the database
+     * based on its ID. It takes the branch's ID, operation status, name, and
+     * address as parameters.
+     *
+     * @param branchId The ID of the branch to update.
+     * @param operationStatus The new operation status for the branch.
+     * @param branchName The new name for the branch.
+     * @param address The new address for the branch.
+     * @return true if the update was successful, false otherwise.
+     */
     @WebMethod(operationName = "updateBranch")
     public boolean updateBranch(int branchId,
             @WebParam(name = "operation_status") String operationStatus,
@@ -63,6 +105,13 @@ public class BranchWebServices {
         return updateBranch.updateBranch_Query(branchId);
     }
 
+    /**
+     * Web service operation for deleting a branch from the database based on
+     * its ID.
+     *
+     * @param branchId The ID of the branch to delete.
+     * @return true if the deletion was successful, false otherwise.
+     */
     @WebMethod(operationName = "deleteBranch")
     public boolean deleteBranch(int branchId) {
         BranchQueries deleteBranch = new BranchQueries();
