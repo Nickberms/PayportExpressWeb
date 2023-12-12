@@ -6,8 +6,8 @@ import javax.jws.*;
 
 /**
  * The {@code BranchWebServices} class provides SOAP web services for
- * branch-related operations. This class exposes methods for creating, retrieving,
- * updating, and deleting branch information.
+ * branch-related operations. This class exposes methods for creating,
+ * retrieving, updating, and deleting branch information.
  *
  * @author Kein Bermejo
  */
@@ -15,11 +15,11 @@ import javax.jws.*;
 public class BranchWebServices {
 
     /**
-     * Web service operation for inserting a new branch into the database. It
-     * takes the branch name and address as parameters.
+     * Web service operation for inserting a new branch into the database. Takes
+     * various branch details as parameters and creates a new branch record.
      *
-     * @param branchName The name of the branch to insert.
-     * @param address The address of the branch to insert.
+     * @param branchName The branch name of the branch.
+     * @param address The address of the branch.
      */
     @WebMethod(operationName = "insertNewBranch")
     public void insertNewBranch(
@@ -32,8 +32,8 @@ public class BranchWebServices {
     }
 
     /**
-     * Web service operation for retrieving all branches from the database. It
-     * returns an array list of string arrays, each representing a branch's
+     * Web service operation for retrieving all branches from the database.
+     * Returns an array list of string arrays, each representing a branch's
      * details.
      *
      * @return An ArrayList of String arrays, each array containing branch
@@ -59,10 +59,10 @@ public class BranchWebServices {
 
     /**
      * Web service operation for retrieving details of a specific branch based
-     * on its ID. It returns a string array containing the details of the
+     * on its branch ID. Returns a string array containing the details of the
      * specified branch if found.
      *
-     * @param branchId The ID of the branch to retrieve.
+     * @param branchId The branch ID of the branch to retrieve.
      * @return A String array containing the branch details, or null if not
      * found.
      */
@@ -84,13 +84,13 @@ public class BranchWebServices {
 
     /**
      * Web service operation for updating a branch's details in the database
-     * based on its ID. It takes the branch's ID, operation status, name, and
-     * address as parameters.
+     * based on its branch ID. Takes various parameters to update the branch's
+     * record.
      *
-     * @param branchId The ID of the branch to update.
-     * @param operationStatus The new operation status for the branch.
-     * @param branchName The new name for the branch.
-     * @param address The new address for the branch.
+     * @param branchId The branch ID of the branch to update.
+     * @param operationStatus The updated operation status of the branch.
+     * @param branchName The updated branch name of the branch.
+     * @param address The updated address of the branch.
      * @return true if the update was successful, false otherwise.
      */
     @WebMethod(operationName = "updateBranch")
@@ -107,9 +107,9 @@ public class BranchWebServices {
 
     /**
      * Web service operation for deleting a branch from the database based on
-     * its ID.
+     * its branch ID.
      *
-     * @param branchId The ID of the branch to delete.
+     * @param branchId The branch ID of the branch to delete.
      * @return true if the deletion was successful, false otherwise.
      */
     @WebMethod(operationName = "deleteBranch")

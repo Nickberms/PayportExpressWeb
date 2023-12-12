@@ -90,10 +90,10 @@ public class EmployeeWebServices {
 
     /**
      * Web service operation for retrieving details of a specific employee based
-     * on their ID. Returns a string array containing the details of the
-     * specified employee if found.
+     * on their employee ID. Returns a string array containing the details of
+     * the specified employee if found.
      *
-     * @param employeeId The ID of the employee to retrieve.
+     * @param employeeId The employee ID of the employee to retrieve.
      * @return A String array containing the employee details, or null if not
      * found.
      */
@@ -124,10 +124,10 @@ public class EmployeeWebServices {
 
     /**
      * Web service operation for updating an employee's details in the database
-     * based on their ID. Takes various parameters to update the employee's
-     * record.
+     * based on their employee ID. Takes various parameters to update the
+     * employee's record.
      *
-     * @param employeeId The ID of the employee to update.
+     * @param employeeId The employee ID of the employee to update.
      * @param branchStationed The updated branch ID where the employee is
      * stationed.
      * @param workingStatus The updated working status of the employee.
@@ -169,9 +169,9 @@ public class EmployeeWebServices {
 
     /**
      * Web service operation for deleting an employee from the database based on
-     * their ID.
+     * their employee ID.
      *
-     * @param employeeId The ID of the employee to delete.
+     * @param employeeId The employee ID of the employee to delete.
      * @return true if the deletion was successful, false otherwise.
      */
     @WebMethod(operationName = "deleteEmployee")

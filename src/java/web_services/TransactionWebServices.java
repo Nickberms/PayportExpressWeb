@@ -6,9 +6,28 @@ import java.time.format.*;
 import java.util.*;
 import javax.jws.*;
 
+/**
+ * The {@code TransactionWebServices} class provides SOAP web services for
+ * transaction-related operations. This class exposes methods for creating,
+ * retrieving, updating, and deleting transaction information.
+ *
+ * @author Kein Bermejo
+ */
 @WebService(serviceName = "TransactionWebServices")
 public class TransactionWebServices {
 
+    /**
+     * Web service operation for inserting a new transaction into the database.
+     * Takes various transaction details as parameters and creates a new
+     * transaction record.
+     *
+     * @param serviceFee The service fee associated with the transaction.
+     * @param senderName The name of the sender client in the transaction.
+     * @param senderContactNumber The contact number of the sender client.
+     * @param receiverName The name of the receiver client in the transaction.
+     * @param receiverContactNumber The contact number of the receiver client.
+     * @param amount The amount of money being transacted.
+     */
     @WebMethod(operationName = "insertNewTransaction")
     public void insertNewTransaction(
             @WebParam(name = "service_fee") Float serviceFee,
@@ -27,6 +46,14 @@ public class TransactionWebServices {
         insertNewTransaction.insertNewTransaction_Query();
     }
 
+    /**
+     * Web service operation for retrieving all transactions from the database.
+     * Returns an array list of string arrays, each representing a transaction's
+     * details.
+     *
+     * @return An ArrayList of String arrays, each array containing transaction
+     * details.
+     */
     @WebMethod(operationName = "selectAllTransactions")
     public ArrayList<String[]> selectAllTransactions() {
         ArrayList<String[]> transactionStr = new ArrayList<>();
@@ -58,6 +85,15 @@ public class TransactionWebServices {
         return transactionStr;
     }
 
+    /**
+     * Web service operation for retrieving details of a specific transaction
+     * based on its control number. Returns a string array containing the
+     * details of the specified transaction if found.
+     *
+     * @param controlNumber The control number of the transaction to retrieve.
+     * @return A String array containing the transaction details, or null if not
+     * found.
+     */
     @WebMethod(operationName = "selectTransaction")
     public String[] selectTransaction(@WebParam(name = "control_number") int controlNumber) {
         TransactionQueries selectTransaction = new TransactionQueries();
@@ -87,12 +123,31 @@ public class TransactionWebServices {
         }
     }
 
+    /**
+     * Web service operation for marking a transaction's service fee as paid in
+     * the database.
+     *
+     * @param controlNumber The control number of the transaction for which to
+     * update the fee status.
+     * @return true if the update was successful, false otherwise.
+     */
     @WebMethod(operationName = "payServiceFee")
     public boolean payServiceFee(int controlNumber) {
         TransactionQueries payServiceFee = new TransactionQueries();
         return payServiceFee.payServiceFee_Query(controlNumber);
     }
 
+    /**
+     * Web service operation for marking a transaction as sent in the database.
+     * This method updates the sender employee and branch sent for the
+     * transaction.
+     *
+     * @param controlNumber The control number of the transaction to mark as
+     * sent.
+     * @param senderEmployee The employee ID of the sender employee in the transaction.
+     * @param branchSent The branch ID where the transaction was sent.
+     * @return true if the update was successful, false otherwise.
+     */
     @WebMethod(operationName = "sendAmount")
     public boolean sendAmount(int controlNumber,
             @WebParam(name = "sender_employee") Integer senderEmployee,
@@ -103,6 +158,18 @@ public class TransactionWebServices {
         return sendAmount.sendAmount_Query(controlNumber);
     }
 
+    /**
+     * Web service operation for marking a transaction as withdrawn in the
+     * database. This method updates the receiver employee and branch withdrawn
+     * for the transaction.
+     *
+     * @param controlNumber The control number of the transaction to mark as
+     * withdrawn.
+     * @param receiverEmployee The employee ID of the receiver employee in the
+     * transaction.
+     * @param branchWithdrawn The branch ID where the transaction was withdrawn.
+     * @return true if the update was successful, false otherwise.
+     */
     @WebMethod(operationName = "withdrawAmount")
     public boolean withdrawAmount(int controlNumber,
             @WebParam(name = "receiver_employee") Integer receiverEmployee,
@@ -113,6 +180,13 @@ public class TransactionWebServices {
         return withdrawAmount.withdrawAmount_Query(controlNumber);
     }
 
+    /**
+     * Web service operation for deleting a transaction from the database based
+     * on its control number.
+     *
+     * @param controlNumber The control number of the transaction to delete.
+     * @return true if the deletion was successful, false otherwise.
+     */
     @WebMethod(operationName = "deleteTransaction")
     public boolean deleteTransaction(int controlNumber) {
         TransactionQueries deleteTransaction = new TransactionQueries();

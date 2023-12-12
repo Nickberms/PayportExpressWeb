@@ -5,8 +5,9 @@ import java.text.*;
 import javax.jws.*;
 
 /**
- * The {@code AdminWebServices} class provides a SOAP web service for
- * an admin-related operation. This class exposes a method for authenticating admin users.
+ * The {@code AdminWebServices} class provides a SOAP web service for an
+ * admin-related operation. This class exposes a method for authenticating admin
+ * users.
  *
  * @author Kein Bermejo
  */
@@ -14,15 +15,14 @@ import javax.jws.*;
 public class AdminWebServices {
 
     /**
-     * Authenticates an admin user and returns an array of strings containing
-     * admin details. It allows an admin to log in using their email
-     * address and password. If the authentication is successful, it returns an
-     * array of admin details; otherwise, it returns {@code null}.
+     * Web service operation for authenticating an admin against the database.
+     * Uses email address and password for authentication. Returns a string
+     * array containing the authenticated admin's details if successful.
      *
-     * @param emailAddress The email address of the admin to authenticate.
-     * @param password The password of the admin to authenticate.
-     * @return An array of {@code String} representing admin details if
-     * authentication succeeds, or {@code null} if it fails.
+     * @param emailAddress The email address of the admin for authentication.
+     * @param password The password of the admin for authentication.
+     * @return A String array containing the authenticated admin's details, or
+     * null if authentication fails.
      */
     @WebMethod(operationName = "adminLogin")
     public String[] adminLogin(@WebParam(name = "email_address") String emailAddress,
