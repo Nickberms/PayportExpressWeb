@@ -32,12 +32,12 @@ public class BranchQueries extends DatabaseConnection {
      * Constructs an instance of BranchQueries with initial values for branch
      * details.
      *
-     * @param branch_id Unique identifier for the branch.
-     * @param operation_status Operational status of the branch.
+     * @param branch_id Unique identifier for the branch record.
+     * @param operation_status Operation status of the branch.
      * @param branch_name Name of the branch.
      * @param address Address of the branch.
-     * @param date_created Timestamp when the branch was created.
-     * @param date_modified Timestamp when the branch was last modified.
+     * @param date_created Timestamp when the branch record was created.
+     * @param date_modified Timestamp when the branch record was last modified.
      */
     public BranchQueries(
             Integer branch_id,
@@ -55,25 +55,25 @@ public class BranchQueries extends DatabaseConnection {
     }
 
     /**
-     * Gets the branch's unique identifier.
+     * Gets the branch ID of the branch.
      *
-     * @return The branch ID.
+     * @return The branch ID of the branch.
      */
     public Integer getBranchId() {
         return branch_id;
     }
 
     /**
-     * Sets the branch's unique identifier.
+     * Sets the branch ID of the branch.
      *
-     * @param branch_id The new ID to set for the branch.
+     * @param branch_id The branch ID to set for the branch.
      */
     public void setBranchId(Integer branch_id) {
         this.branch_id = branch_id;
     }
 
     /**
-     * Gets the operational status of the branch.
+     * Gets the operation status of the branch.
      *
      * @return The operation status of the branch.
      */
@@ -82,27 +82,27 @@ public class BranchQueries extends DatabaseConnection {
     }
 
     /**
-     * Sets the operational status of the branch.
+     * Sets the operation status of the branch.
      *
-     * @param operation_status The new operation status to set for the branch.
+     * @param operation_status The operation status to set for the branch.
      */
     public void setOperationStatus(String operation_status) {
         this.operation_status = operation_status;
     }
 
     /**
-     * Gets the name of the branch.
+     * Gets the branch name of the branch.
      *
-     * @return The branch name.
+     * @return The branch name of the branch.
      */
     public String getBranchName() {
         return branch_name;
     }
 
     /**
-     * Sets the name of the branch.
+     * Sets the branch name of the branch.
      *
-     * @param branch_name The new branch name to set.
+     * @param branch_name The branch name to set for the branch.
      */
     public void setBranchName(String branch_name) {
         this.branch_name = branch_name;
@@ -120,43 +120,45 @@ public class BranchQueries extends DatabaseConnection {
     /**
      * Sets the address of the branch.
      *
-     * @param address The new address to set for the branch.
+     * @param address The address to set for the branch.
      */
     public void setAddress(String address) {
         this.address = address;
     }
 
     /**
-     * Gets the timestamp when the branch was created.
+     * Gets the timestamp when the branch record was created.
      *
-     * @return The creation timestamp of the branch.
+     * @return The timestamp when the branch record was created.
      */
     public Timestamp getDateCreated() {
         return date_created;
     }
 
     /**
-     * Sets the timestamp when the branch was created.
+     * Sets the timestamp when the branch record was created.
      *
-     * @param date_created The new creation timestamp to set for the branch.
+     * @param date_created The timestamp to set for when the branch record was
+     * created.
      */
     public void setDateCreated(Timestamp date_created) {
         this.date_created = date_created;
     }
 
     /**
-     * Gets the timestamp when the branch was last modified.
+     * Gets the timestamp when the branch record was last modified.
      *
-     * @return The last modified timestamp of the branch.
+     * @return The timestamp when the branch record was last modified.
      */
     public Timestamp getDateModified() {
         return date_modified;
     }
 
     /**
-     * Sets the timestamp when the branch was last modified.
+     * Sets the timestamp when the branch record was last modified.
      *
-     * @param date_modified The new modified timestamp to set for the branch.
+     * @param date_modified The timestamp to set for when the branch record was
+     * last modified.
      */
     public void setDateModified(Timestamp date_modified) {
         this.date_modified = date_modified;
@@ -181,10 +183,9 @@ public class BranchQueries extends DatabaseConnection {
     }
 
     /**
-     * Inserts a new branch with the current instance's data into the database.
-     * This method sets the branch's operation status to "Active" and uses the
-     * current branch name and address. It automatically sets the creation and
-     * modification timestamps to the current time.
+     * Inserts a new branch into the database using the current instance's data.
+     * The operation status is set to "Active" by default. This method
+     * also sets the creation and modification timestamps to the current time.
      */
     public void insertNewBranch_Query() {
         String activeStatus = "Active";
@@ -209,12 +210,11 @@ public class BranchQueries extends DatabaseConnection {
     }
 
     /**
-     * Retrieves a list of all branches from the database. This method queries
-     * the database for all branch records and returns them as a list of
-     * {@code BranchQueries} objects.
+     * Retrieves a list of all branches from the database. Each branch is
+     * represented as a {@code BranchQueries} object containing its details.
      *
-     * @return A list of {@code BranchQueries} objects representing all branches
-     * in the database.
+     * @return A list of {@code BranchQueries} objects, each representing a
+     * branch.
      */
     public List<BranchQueries> selectAllBranches_Query() {
         List<BranchQueries> branches = new ArrayList<>();
@@ -242,10 +242,10 @@ public class BranchQueries extends DatabaseConnection {
 
     /**
      * Retrieves a specific branch from the database based on the given branch
-     * ID. This method queries the database for a branch with the specified ID
-     * and returns it as a {@code BranchQueries} object.
+     * ID. The method returns a {@code BranchQueries} object representing the
+     * branch if found.
      *
-     * @param branchId The ID of the branch to retrieve.
+     * @param branchId The branch ID of the transaction to retrieve.
      * @return A {@code BranchQueries} object representing the requested branch,
      * or {@code null} if not found.
      */
@@ -276,12 +276,11 @@ public class BranchQueries extends DatabaseConnection {
     }
 
     /**
-     * Updates an existing branch in the database with the current instance's
-     * data, based on the given branch ID. This method updates the operation
-     * status, branch name, and address of the specified branch. It
-     * automatically sets the modification timestamp to the current time.
+     * Updates an existing branch details in the database based on the given
+     * branch ID. This method updates most of the branch details. It also
+     * sets the modification timestamp to the current time.
      *
-     * @param branchId The ID of the branch to update.
+     * @param branchId The branch ID of the branch to update.
      * @return {@code true} if the update was successful, {@code false}
      * otherwise.
      */
@@ -309,9 +308,9 @@ public class BranchQueries extends DatabaseConnection {
 
     /**
      * Deletes a branch from the database based on the given branch ID. This
-     * method removes the branch record with the specified ID from the database.
+     * method removes the branch record with the specified branch ID from the database.
      *
-     * @param branchId The ID of the branch to delete.
+     * @param branchId The branch ID of the branch to delete.
      * @return {@code true} if the deletion was successful, {@code false}
      * otherwise.
      */

@@ -40,9 +40,8 @@ public class EmployeeQueries extends DatabaseConnection {
      * Constructs an instance of EmployeeQueries with initial values for
      * employee details.
      *
-     * @param employee_id Unique identifier for the employee.
-     * @param branch_stationed Identifier of the branch where the employee is
-     * stationed.
+     * @param employee_id Unique identifier for the employee record.
+     * @param branch_stationed Branch ID where the employee is stationed.
      * @param working_status Working status of the employee.
      * @param first_name First name of the employee.
      * @param last_name Last name of the employee.
@@ -52,8 +51,9 @@ public class EmployeeQueries extends DatabaseConnection {
      * @param phone_number Phone number of the employee.
      * @param email_address Email address of the employee.
      * @param password Password for the employee.
-     * @param date_created Timestamp when the employee was created.
-     * @param date_modified Timestamp when the employee was last modified.
+     * @param date_created Timestamp when the employee record was created.
+     * @param date_modified Timestamp when the employee record was last
+     * modified.
      */
     public EmployeeQueries(
             Integer employee_id,
@@ -85,18 +85,18 @@ public class EmployeeQueries extends DatabaseConnection {
     }
 
     /**
-     * Gets the employee's unique identifier.
+     * Gets the employee ID of the employee.
      *
-     * @return The employee ID.
+     * @return The employee ID of the employee.
      */
     public Integer getEmployeeId() {
         return employee_id;
     }
 
     /**
-     * Sets the employee's unique identifier.
+     * Sets the employee ID of the employee.
      *
-     * @param employee_id The new ID to set for the employee.
+     * @param employee_id The employee ID to set for the employee.
      */
     public void setEmployeeId(Integer employee_id) {
         this.employee_id = employee_id;
@@ -114,7 +114,8 @@ public class EmployeeQueries extends DatabaseConnection {
     /**
      * Sets the branch ID where the employee is stationed.
      *
-     * @param branch_stationed The branch ID to set for the employee's station.
+     * @param branch_stationed The branch ID to set for where the employee is
+     * stationed.
      */
     public void setBranchStationed(Integer branch_stationed) {
         this.branch_stationed = branch_stationed;
@@ -283,36 +284,38 @@ public class EmployeeQueries extends DatabaseConnection {
     }
 
     /**
-     * Gets the timestamp when the employee was created.
+     * Gets the timestamp when the employee record was created.
      *
-     * @return The creation timestamp of the employee.
+     * @return The timestamp when the employee record was created.
      */
     public Timestamp getDateCreated() {
         return date_created;
     }
 
     /**
-     * Sets the timestamp when the employee was created.
+     * Sets the timestamp when the employee record was created.
      *
-     * @param date_created The creation timestamp to set for the employee.
+     * @param date_created The timestamp to set for when the employee record was
+     * created.
      */
     public void setDateCreated(Timestamp date_created) {
         this.date_created = date_created;
     }
 
     /**
-     * Gets the timestamp when the employee was last modified.
+     * Gets the timestamp when the employee record was last modified.
      *
-     * @return The last modified timestamp of the employee.
+     * @return The timestamp when the employee record was last modified.
      */
     public Timestamp getDateModified() {
         return date_modified;
     }
 
     /**
-     * Sets the timestamp when the employee was last modified.
+     * Sets the timestamp when the employee record was last modified.
      *
-     * @param date_modified The modified timestamp to set for the employee.
+     * @param date_modified The timestamp to set for when the employee record
+     * was last modified.
      */
     public void setDateModified(Timestamp date_modified) {
         this.date_modified = date_modified;
@@ -338,9 +341,8 @@ public class EmployeeQueries extends DatabaseConnection {
 
     /**
      * Inserts a new employee into the database using the current instance's
-     * data. The employee's working status is set to "Active" by default. This
-     * method also sets the creation and modification timestamps to the current
-     * time.
+     * data. The working status is set to "Active" by default. This method also
+     * sets the creation and modification timestamps to the current time.
      */
     public void insertNewEmployee_Query() {
         String activeStatus = "Active";
@@ -427,7 +429,7 @@ public class EmployeeQueries extends DatabaseConnection {
      * employee ID. The method returns an {@code EmployeeQueries} object
      * representing the employee if found.
      *
-     * @param employeeId The ID of the employee to retrieve.
+     * @param employeeId The employee ID of the employee to retrieve.
      * @return An {@code EmployeeQueries} object representing the requested
      * employee, or {@code null} if not found.
      */
@@ -472,12 +474,11 @@ public class EmployeeQueries extends DatabaseConnection {
     }
 
     /**
-     * Updates an existing employee's details in the database based on the given
-     * employee ID. This method updates the employee's branch, working status,
-     * personal information, and contact details. It also sets the modification
-     * timestamp to the current time.
+     * Updates an existing employee details in the database based on the given
+     * employee ID. This method updates most of the employee details. It also
+     * sets the modification timestamp to the current time.
      *
-     * @param employeeId The ID of the employee to update.
+     * @param employeeId The employee ID of the employee to update.
      * @return {@code true} if the update was successful, {@code false}
      * otherwise.
      */
@@ -518,10 +519,11 @@ public class EmployeeQueries extends DatabaseConnection {
     }
 
     /**
-     * Deletes an employee from the database based on the given employee ID. This
-     * method removes the employee record with the specified ID from the database.
+     * Deletes an employee from the database based on the given employee ID.
+     * This method removes the employee record with the specified employee ID
+     * from the database.
      *
-     * @param employeeId The ID of the employee to delete.
+     * @param employeeId The employee ID of the employee to delete.
      * @return {@code true} if the deletion was successful, {@code false}
      * otherwise.
      */

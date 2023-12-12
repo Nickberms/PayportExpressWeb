@@ -37,17 +37,17 @@ public class AdminQueries extends DatabaseConnection {
      * Constructs an instance of AdminQueries with initial values for admin
      * details.
      *
-     * @param admin_id Unique identifier for the admin.
-     * @param first_name Admin's first name.
-     * @param last_name Admin's last name.
-     * @param birthdate Admin's birth date.
-     * @param sex Admin's sex.
-     * @param address Admin's address.
-     * @param phone_number Admin's phone number.
-     * @param email_address Admin's email address.
-     * @param password Admin's password.
-     * @param date_created Timestamp when the admin was created.
-     * @param date_modified Timestamp when the admin was last modified.
+     * @param admin_id Unique identifier for the admin record.
+     * @param first_name First name of the admin.
+     * @param last_name Last name of the admin.
+     * @param birthdate Birth date of the admin.
+     * @param sex Sex of the admin.
+     * @param address Address of the admin.
+     * @param phone_number Phone number of the admin.
+     * @param email_address Email address of the admin.
+     * @param password Password for the admin.
+     * @param date_created Timestamp when the admin record was created.
+     * @param date_modified Timestamp when the admin record was last modified.
      */
     public AdminQueries(
             Integer admin_id,
@@ -75,25 +75,25 @@ public class AdminQueries extends DatabaseConnection {
     }
 
     /**
-     * Gets the admin's unique identifier.
+     * Gets the admin ID of the admin.
      *
-     * @return The admin's ID.
+     * @return The admin ID of the admin.
      */
     public Integer getAdminId() {
         return admin_id;
     }
 
     /**
-     * Sets the admin's unique identifier.
+     * Sets the admin ID of the admin.
      *
-     * @param admin_id The new ID to set for the admin.
+     * @param admin_id The admin ID to set for the admin.
      */
     public void setAdminId(Integer admin_id) {
         this.admin_id = admin_id;
     }
 
     /**
-     * Gets the admin's first name.
+     * Gets the first name of the admin.
      *
      * @return The first name of the admin.
      */
@@ -102,16 +102,16 @@ public class AdminQueries extends DatabaseConnection {
     }
 
     /**
-     * Sets the admin's first name.
+     * Sets the first name of the admin.
      *
-     * @param first_name The new first name to set for the admin.
+     * @param first_name The first name to set for the admin.
      */
     public void setFirstName(String first_name) {
         this.first_name = first_name;
     }
 
     /**
-     * Gets the admin's last name.
+     * Gets the last name of the admin.
      *
      * @return The last name of the admin.
      */
@@ -120,34 +120,34 @@ public class AdminQueries extends DatabaseConnection {
     }
 
     /**
-     * Sets the admin's last name.
+     * Sets the last name of the admin.
      *
-     * @param last_name The new last name to set for the admin.
+     * @param last_name The last name to set for the admin.
      */
     public void setLastName(String last_name) {
         this.last_name = last_name;
     }
 
     /**
-     * Gets the admin's birth date.
+     * Gets the birthdate of the admin.
      *
-     * @return The birth date of the admin.
+     * @return The birthdate of the admin.
      */
     public java.util.Date getBirthdate() {
         return birthdate;
     }
 
     /**
-     * Sets the admin's birth date.
+     * Sets the birthdate of the admin.
      *
-     * @param birthdate The new birth date to set for the admin.
+     * @param birthdate The birthdate to set for the admin.
      */
     public void setBirthdate(java.util.Date birthdate) {
         this.birthdate = birthdate;
     }
 
     /**
-     * Gets the admin's sex.
+     * Gets the sex of the admin.
      *
      * @return The sex of the admin.
      */
@@ -156,16 +156,16 @@ public class AdminQueries extends DatabaseConnection {
     }
 
     /**
-     * Sets the admin's sex.
+     * Sets the sex of the admin.
      *
-     * @param sex The new sex to set for the admin.
+     * @param sex The sex to set for the admin.
      */
     public void setSex(String sex) {
         this.sex = sex;
     }
 
     /**
-     * Gets the admin's address.
+     * Gets the address of the admin.
      *
      * @return The address of the admin.
      */
@@ -174,16 +174,16 @@ public class AdminQueries extends DatabaseConnection {
     }
 
     /**
-     * Sets the admin's address.
+     * Sets the address of the admin.
      *
-     * @param address The new address to set for the admin.
+     * @param address The address to set for the admin.
      */
     public void setAddress(String address) {
         this.address = address;
     }
 
     /**
-     * Gets the admin's phone number.
+     * Gets the phone number of the admin.
      *
      * @return The phone number of the admin.
      */
@@ -192,16 +192,16 @@ public class AdminQueries extends DatabaseConnection {
     }
 
     /**
-     * Sets the admin's phone number.
+     * Sets the phone number of the admin.
      *
-     * @param phone_number The new phone number to set for the admin.
+     * @param phone_number The phone number to set for the admin.
      */
     public void setPhoneNumber(String phone_number) {
         this.phone_number = phone_number;
     }
 
     /**
-     * Gets the admin's email address.
+     * Gets the email address of the admin.
      *
      * @return The email address of the admin.
      */
@@ -210,16 +210,16 @@ public class AdminQueries extends DatabaseConnection {
     }
 
     /**
-     * Sets the admin's email address.
+     * Sets the email address of the admin.
      *
-     * @param email_address The new email address to set for the admin.
+     * @param email_address The email address to set for the admin.
      */
     public void setEmailAddress(String email_address) {
         this.email_address = email_address;
     }
 
     /**
-     * Gets the admin's password.
+     * Gets the password of the admin.
      *
      * @return The password of the admin.
      */
@@ -228,45 +228,47 @@ public class AdminQueries extends DatabaseConnection {
     }
 
     /**
-     * Sets the admin's password.
+     * Sets the password of the admin.
      *
-     * @param password The new password to set for the admin.
+     * @param password The password to set for the admin.
      */
     public void setPassword(String password) {
         this.password = password;
     }
 
     /**
-     * Gets the timestamp when the admin was created.
+     * Gets the timestamp when the admin record was created.
      *
-     * @return The creation timestamp of the admin.
+     * @return The timestamp when the admin record was created.
      */
     public Timestamp getDateCreated() {
         return date_created;
     }
 
     /**
-     * Sets the timestamp when the admin was created.
+     * Sets the timestamp when the admin record was created.
      *
-     * @param date_created The new creation timestamp to set for the admin.
+     * @param date_created The timestamp to set for when the admin record was
+     * created.
      */
     public void setDateCreated(Timestamp date_created) {
         this.date_created = date_created;
     }
 
     /**
-     * Gets the timestamp when the admin was last modified.
+     * Gets the timestamp when the admin record was last modified.
      *
-     * @return The last modified timestamp of the admin.
+     * @return The timestamp when the admin record was last modified.
      */
     public Timestamp getDateModified() {
         return date_modified;
     }
 
     /**
-     * Sets the timestamp when the admin was last modified.
+     * Sets the timestamp when the admin record was last modified.
      *
-     * @param date_modified The new modified timestamp to set for the admin.
+     * @param date_modified The timestamp to set for when the admin record was
+     * last modified.
      */
     public void setDateModified(Timestamp date_modified) {
         this.date_modified = date_modified;
@@ -291,14 +293,14 @@ public class AdminQueries extends DatabaseConnection {
     }
 
     /**
-     * Authenticates an admin user against the database using the provided email
+     * Authenticates an admin against the database using the provided email
      * address and password. If authentication is successful, it returns an
      * {@code AdminQueries} object containing the admin's data.
      *
      * @param emailAddress The email address of the admin to authenticate.
      * @param password The password of the admin to authenticate.
      * @return An {@code AdminQueries} object containing the authenticated
-     * admin's data if authentication is successful; otherwise, {@code null}.
+     * admin's data, or {@code null} if authentication fails.
      */
     public AdminQueries adminLogin_Query(String emailAddress, String password) {
         AdminQueries admin = null;
